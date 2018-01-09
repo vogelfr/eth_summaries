@@ -1,0 +1,808 @@
+\documentclass[9pt]{scrartcl}
+
+\usepackage{geometry}
+\geometry{hmargin=0.75cm,top=1cm,bottom=1.5cm}
+\geometry{a4paper}
+\geometry{landscape}
+
+\usepackage[parfill]{parskip}
+\usepackage[applemac]{inputenc}
+\usepackage[frenchb,ngerman]{babel}
+\usepackage{multicol}
+
+\usepackage{array}
+\usepackage{setspace}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{amssymb}
+\usepackage{amsmath}
+
+\def\Item(#1){\item[\llap{(}$-$] #1)}
+
+\newcommand\N{\mathbb{N}}
+\newcommand\Z{\mathbb{Z}}
+\newcommand\Q{\mathbb{Q}}
+\newcommand\R{\mathbb{R}}
+\newcommand\I{\mathbb{I}}
+\newcommand\C{\mathbb{C}}
+\newcommand\sech{\textrm{sech}}
+\newcommand\dif[1]{\mathop{\textrm{d}#1}}
+\newcommand{\unit}[1]{\ensuremath{\, \mathrm{#1}}}
+
+\setcounter{secnumdepth}{5}
+\setcounter{tocdepth}{2}
+
+
+\let\stdsection\section
+\renewcommand\section{\newpage\stdsection}
+\renewcommand{\labelitemi}{$-$}
+
+
+
+\title{ZUSAMMENFASSUNG}
+\subtitle{Analysis I + II}
+\author{\copyright Frédéric Vogel}
+\date{ETH, Basisprüfung FS13}
+
+
+\begin{document}
+
+	\maketitle
+	\begin{multicols}{2}
+		\tableofcontents
+	\end{multicols}
+	
+	\twocolumn
+	\columnseprule 1pt
+	
+	\section{Grundlagen}	
+		\subsection{Wichtige Funktionen und ihre Definition}
+			\begin{table}[h!]
+				\setlength{\extrarowheight}{10pt}
+				\begin{tabular}{ r l}
+					Funktion & Definition\\
+					\hline
+					$\exp{x}$ & $ \displaystyle\sum_{k=0}^\infty{\frac{1}{k!}x^k}=1+x+\frac{1}{2!}x^2+\frac{1}{3!}x^3+\frac{1}{4!}x^4+\cdots $ \\
+					$\sin{x}$ & $ \displaystyle\sum_{k=0}^\infty{(-1)^k\frac{1}{(2n+1)!}x^{2n+1}}=x-\frac{1}{3!}x^3+\frac{1}{5!}x^5-\frac{1}{7!}x^7\pm\cdots $ \\
+					$\cos{x}$ & $ \displaystyle\sum_{k=0}^\infty{(-1)^k\frac{1}{(2n)!}x^{2n}}=1-\frac{1}{2!}x^2+\frac{1}{4!}x^4-\frac{1}{6!}x^6\pm\cdots $ \\
+					$\sinh{x}$ & $ \displaystyle\sum_{k=0}^\infty{\frac{1}{(2n+1)!}x^{2n+1}}=x+\frac{1}{3!}x^3+\frac{1}{5!}x^5+\frac{1}{7!}x^7+\cdots $ \\
+					$\cosh{x}$ & $ \displaystyle\sum_{k=0}^\infty{\frac{1}{(2n)!}x^{2n}}=1+\frac{1}{2!}x^2+\frac{1}{4!}x^4+\frac{1}{6!}x^6+\cdots $ \\
+				\end{tabular}
+			\end{table}
+			
+		\subsection{Einige Grenzwerte}
+			\subsubsection{Folgen}
+				\begin{table}[h!]
+				\setlength{\tabcolsep}{4pt}
+					\setlength{\extrarowheight}{4pt}
+					\begin{tabular}{ l c l | l c l | l c l }
+						$\lim_{n \to\infty}{\sqrt[n]{a}}$ & $=$ & $1$ & $\lim_{n \to\infty}{\sqrt[n]{n}}$ & = & $1$ & $\lim_{n \to\infty}{\sqrt[n]{n!}}$ & $=$ & $\infty$\\
+						$\lim_{n \to\infty}{\frac{n}{\sqrt[n]{n!}}}$ & $=$ & $e$ & $\lim_{n \to\infty}{\frac{1}{n}\sqrt[n]{n!}}$ & $=$ & $\frac{1}{e}$ & $\lim_{n \to\infty}{n\tan{\frac{\alpha}{n}}}$ & $=$ & $\alpha$\\
+						$\lim_{n \to\infty}{(1+\frac{x}{n})^n}$ & $=$ & $e^x$ & $\lim_{n \to\infty}{(1-\frac{x}{n})^n}$ & $=$ & $\frac{1}{e^x}$ & $\lim_{n \to\infty}{\binom{a}{n}}$ & $=$ & $0,~a > -1$\\
+						$\lim_{n \to\infty}{\frac{a^n}{n!}}$ & $=$ & $0$ & $\lim_{n \to\infty}{\frac{n^n}{n!}}$ & $=$ & $\infty$ & $\lim_{n \to\infty}{\frac{a^n}{n^k}}$ & $=$ & $\infty,~ a >1$\\
+						$\lim_{n \to\infty}{\sqrt{x^2-x}-x}$ & $=$ & $\frac{1}{2}$ & $\lim_{n \to\infty}{n(\sqrt[n]{a} - 1)}$ & $=$ & $\ln{a}$ & $\lim_{n \to\infty}{n^p q^n}$ & $=$ & $0, ~|q|<1$\\
+						\hline
+						$\lim_{n \to 0}{\frac{a^n-1}{n}}$ & $=$ & $\ln{a}$ & $\lim_{n \to 0}{\frac{\log_a{(1+n)}}{n}}$ & $=$ & $\frac{1}{ln{a}}$ & $\lim_{n \to 0}{n^a \ln{n}}$ & $=$ & $0,~ a>0$\\
+						$\lim_{n \to 0}{\frac{\sin{n}}{n}}$ & $=$ & $1$ & $\lim_{n \to 0}{\frac{1-\cos{n}}{n}}$ & $=$ & $0$\\
+					\end{tabular}
+				\end{table}
+				
+			\subsubsection{Reihen}
+				\begin{table}[h!]
+					\setlength{\tabcolsep}{3pt}
+					%\setlength{\extrarowheight}{5pt}
+					\begin{tabular}{ l l l | l l l | l l l}
+						$\sum_{n=1}^\infty{\frac{1}{n^\alpha}}$ & $=$ & $\zeta(\alpha),~(\alpha > 1)$ & \multicolumn{3}{l|}{$\zeta(x) = \textrm{Riemann Zeta Function}$} & $\sum_{n=1}^\infty{\frac{(-1)^n}{n}}$ & $=$ & $\ln{\frac{1}{2}}$\\
+						$\sum_{n=1}^\infty{q^n}$ & $=$ & $\frac{1}{1-q},~(|q| < 1)$ & \multicolumn{3}{l|}{Geometrische Reihe} & $\sum_{n=1}^\infty{(-1)^nq^n}$ & $=$ & $\frac{1}{1-q},~(|q| < 1)$\\
+						$\sum_{n=1}^\infty{\frac{1}{n^2}}$ & $=$ & $\frac{\pi^2}{6}$ & & & &\\
+						\hline
+						$\sum_{n=1}^m{q^n}$ & $=$ & $\frac{1-q^{m+1}}{1-q}$ & $\sum_{n=1}^m{n^2}$ & $=$ & $\frac{1}{6}m(m+1)(2m+1)$ & $\sum_{n=1}^m{n^3}$ & $=$ & $\frac{1}{4} m^2(m+1)^2$\\ 
+					\end{tabular}
+				\end{table}
+
+		
+		\newpage	
+		\subsection{Wichtige Ableitungen und Integrale}
+			\begin{table}[h!]
+				\setlength{\extrarowheight}{4pt}
+				\begin{tabular}{ r c l | r c l}
+					$F(x)$ & $f(x)$ & $f'(x)$ & $F(x)$ & $f(x)$ & $f'(x)$\\
+					\hline
+					$\exp{x}$ & $\exp{x}$ & $\exp{x}$ & $ x(\ln{x}-1)$ & $\ln{x}$ & $\frac{1}{x}$\\
+					$-\cos{x}$ & $\sin{x}$ & $\cos{x}$ & $\sqrt{1-x^2}+x\sin^{-1}{x}$ & $\sin{^{-1}x}$ & $\frac{1}{\sqrt{1-x^2}}$\\
+					$\sin{x}$ & $\cos{x}$ & $-\sin{x}$ & $-\sqrt{1-x^2}+x\cos^{-1}{x}$ & $\cos^{-1}{x}$ & $-\frac{1}{\sqrt{1-x^2}}$\\
+					$-\ln{\cos{x}}$ & $\tan{x}$ & $\frac{1}{\cos^2{x}}$ & $ x\tan^{-1}{x}-\frac{1}{2}\ln{x^2+1}$ & $\tan^{-1}{x}$ & $ \frac{1}{x^2+1}$\\
+					$\cosh{x}$ & $\sinh{x}$ & $\cosh{x}$ & $-\sqrt{x^2+1}+x\sinh^{-1}{x}$ & $\sinh^{-1}{x}$ & $\frac{1}{\sqrt{x^2+1}}$\\
+					$\sinh{x}$ & $\cosh{x}$ & $\sinh{x}$ & $-\sqrt{x-1}\sqrt{x+1}+x\cosh^{-1}{x}$ & $\cosh^{-1}{x}$ & $\frac{1}{\sqrt{x-1}\sqrt{x+1}}$\\
+					$\ln{\cosh{x}}$ & $\tanh{x}$ & $\frac{1}{\cosh^2{x}}$ & $x\tanh^{-1}{x}+\frac{1}{2}\ln{1-x^2}$ & $\tanh^{-1}{x}$ & $\frac{1}{1-x^2}$\\
+					$\frac{1}{r+1} x^{r+1}$ & $x^r$ & $r x^{r-1}$ & $\frac{1}{n+1} n x^{\frac{1}{n}+1}$ & $\sqrt[n]{x}$ & $\frac{1}{n} x^{\frac{1}{n}-1}$\\
+					$\frac{a \ln{(b x+c)}}{b}$ & $\frac{a}{b x + c}$ & $-\frac{a b}{(b x + c)^2}$ & $\frac{a (b x+c)^{1-d}}{b-b d}$ & $\frac{a}{(b x + c)^d}$ & $-\frac{a b d}{(b x + c)^{d+1}}$\\
+					$\frac{1}{a}e^{a x}$ & $e^{a x}$ & $a e^{a x}$ & $e^{a x}\left(\frac{a x -1}{a^2}\right)$ & $x e^{a x}$ & $(a x + 1) e^{a x}$\\
+					$\frac{1}{b\ln{a}}a^{b x + c}$ & $a^{b x + c}$ & $a^{b x + c} b\ln{a}$ & $\frac{1}{4}x^2(2\ln{x} - 1)$ & $x \ln{x}$ & $\ln{x} + 1$\\
+					$\frac{(a x + b)^{n+1}}{(n+1)a}$ & $(a x + b)^n$ & $a n(a x + b)^{n-1}$ & $\frac{1}{2}(x\sqrt{1-x^2}+\frac{1}{\sin{x}})$ & $\sqrt{1-x^2}$ & $-\frac{x}{\sqrt{1-x^2}}$\\
+					
+					$-$ & $x^x$ & $x^x (\ln{x} + 1)$\ & $\sqrt{a \pi}$ & $\left . e^{-\frac{1}{a}x^2}\right|_{-\infty}^\infty$ & $-$\\
+				\end{tabular}
+			\end{table}
+
+
+					
+		\subsection{Einige Zusammenhänge zwischen Funktionen}
+			\begin{table}[h!]
+				\setlength{\extrarowheight}{3pt}
+				\begin{tabular}{ l l l }
+						$e^{i\varphi}=\cos{\varphi}+i\sin{\varphi}$ & $\tanh{x} + 1 = \frac{2e^{2x}}{e^{2x}+1}$ & $\sin{x}\sin{y} = \frac{1}{2}\big(\cos{(x-y)}-\cos{(x+y)}\big)$\\
+						$e^{i\pi}+1=0$ & $\cosh^2{x}-\sinh^2{x} = 1$ & $\cos{x}\cos{y} = \frac{1}{2}\big(\cos{(x-y)}+\cos{(x+y)}\big)$\\
+						$e^x=\sinh{x}+\cosh{x}$ & $\cosh{\sinh{x}} = \sqrt{x^2+1}$ & $\sin{x}\cos{y} = \frac{1}{2}\big(\sin{(x-y)}+\sin{(x+y)}\big)$\\
+
+						$\sinh{x} = \frac{e^x-e^{-x}}{2}$ & $\sin^2{x}+\cos^2{x} = 1$ & $\sin{x\pm y} = \sin{x}\cos{y}\pm \cos{x}\sin{y}$\\
+						$\cosh{x} = \frac{e^x+e^{-x}}{2}$ & $\frac{1}{\cos^2{x}} = 1 + \tan^2{x}$ & $\cos{x\pm y} = \cos{x}\cos{y} \mp \sin{x}\sin{y}$\\
+						$\sinh{\cosh{x}} = \sqrt{x^2-1}$ & $\cosh^2{x} = \frac{1}{2}+\frac{1}{2}\cosh{2x}$ & $\tan{x\pm y} = \frac{\tan{x}\pm \tan{y}}{1\mp \tan{x}\tan{y}}$\\
+						$\sin{-x} = -\sin{x}$ & $\sin{2x} = 2\sin{x}\cos{x}$ & $\sin^2{x} = \frac{1}{2}(1-\cos{2x})$\\
+						$\cos{-x} = \cos{x}$ & $\cos{2x} = \cos^2{x}-\sin^2{x}$ & $\cos^2{x} = \frac{1}{2}(1+\cos{2x})$\\
+						$\tan{-x} = -\tan{x}$ & $\tan{2x} = \frac{2\tan{x}}{1-\tan^2{x}}$ & $\tan^2{x} = \frac{1-\cos{2x}}{1+\cos{2x}}$\\
+				\end{tabular}
+			\end{table}		
+						
+		\newpage
+		\subsection{Einige Funktionswerte}
+			\begin{table}[h!]
+				\setlength{\extrarowheight}{3pt}
+				\setlength{\tabcolsep}{3pt}
+				\begin{tabular}{ r | *{17}{c}}
+					$x$ & $0$ & $\frac{\pi}{6}$ & $\frac{\pi}{4}$ & $\frac{\pi}{3}$ & $\frac{\pi}{2}$ & $\frac{2\pi}{3}$ & $\frac{3\pi}{4}$ & $\frac{5\pi}{6}$ & $\pi$ & $\frac{7\pi}{6}$ & $\frac{5\pi}{4}$ & $\frac{4\pi}{3}$ & $\frac{3\pi}{2}$ & $\frac{5\pi}{3}$ & $\frac{7\pi}{4}$ & $\frac{11\pi}{6}$ & $2\pi$\\
+					\hline
+					$\sin{x}$ & $0$ & $\frac{1}{2}$ & $\frac{1}{\sqrt{2}}$ & $\frac{\sqrt{3}}{2}$ & $1$ & $\frac{\sqrt{3}}{2}$ & $\frac{1}{\sqrt{2}}$ & $\frac{1}{2}$ & $0$ & $-\frac{1}{2}$ & $-\frac{1}{\sqrt{2}}$ & $-\frac{\sqrt{3}}{2}$ & $-1$ & $-\frac{\sqrt{3}}{2}$ & $-\frac{1}{\sqrt{2}}$ & $-\frac{1}{2}$ & $0$\\
+					$\cos{x}$ & $1$ & $\frac{\sqrt{3}}{2}$ & $\frac{1}{\sqrt{2}}$ & $\frac{1}{2}$ & $0$ & $-\frac{1}{2}$ & $-\frac{1}{\sqrt{2}}$ & $-\frac{\sqrt{3}}{2}$ & $-1$ & $-\frac{\sqrt{3}}{2}$ & $-\frac{1}{\sqrt{2}}$ & $-\frac{1}{2}$ & $0$ & $\frac{1}{2}$ & $\frac{1}{\sqrt{2}}$ & $\frac{\sqrt{3}}{2}$ & $1$\\
+					$\tan{x}$ & $0$ & $\frac{1}{\sqrt{3}}$ & $1$ & $\sqrt{3}$ & $-$ & $-\sqrt{3}$ & $-1$ & $-\frac{1}{\sqrt{3}}$ & $0$ & $\frac{1}{\sqrt{3}}$ & $1$ & $\sqrt{3}$ & $-$ & $-\sqrt{3}$ & $-1$ & $-\frac{1}{\sqrt{3}}$ & $0$\\
+				\end{tabular}
+			\end{table}
+			
+
+		
+		\subsection{Rechenregeln}
+			\begin{multicols}{3}
+				\subsubsection{$x^n$}
+					\begin{itemize}
+						\item $a^n a^m = a^{n + m}$
+						\item $(a^n)^m = a^{nm}$
+						\item $(ab)^n = a^n b^n$
+						\item $\left( \frac{a}{b} \right)^n = \frac{a^n}{b^n}$
+						\item $a^{-n} = \frac{1}{a^n}$
+						\item $\left( \frac{a}{b} \right)^{-n} = \left( \frac{b}{a} \right)^n$
+						\item $a^\frac{n}{m} = (a^\frac{1}{m})^n = (a^n)^\frac{1}{m}$
+					\end{itemize}
+					\columnbreak
+				
+				
+				\subsubsection{$\sqrt[n]{\quad}$}
+					\begin{itemize}
+						\item $\sqrt[n]{a} = a^\frac{1}{n}$
+						\item $\sqrt[n]{ab} = \sqrt[n]{a} \sqrt[n]{b}$
+						\item $\sqrt[m]{\sqrt[n]{a}} = \sqrt[nm]{a}$
+						\item $\sqrt[n]{\frac{a}{b}} = \frac{\sqrt[n]{a}}{\sqrt[n]{b}}$
+						\item[]\item[]\item[]
+					\end{itemize}
+					\columnbreak
+					
+				\subsubsection{$a+b i$}
+					\begin{itemize}
+						\item $z \in \C: z = a + b\cdot i$
+						\item $\bar{z} = a - b\cdot i$
+						\item $|z|^2 = z \cdot \bar{z} = (a + b\cdot i) \cdot (a - b\cdot i) = a^2 + b^2$
+						\item $i^2 = -1$
+						\item $(a + bi) + (c + di) = (a + c) + (b + d)i$
+						\item $(a + bi) \cdot (c + di) = (ac - bd) + (ad + bc)i$
+						\item $\frac{a + bi}{c + di} = \frac{ac + bd}{c^2 + d^2} + \frac{bc - ad}{c^2 + d^2}\cdot i$
+					\end{itemize}
+			\end{multicols}
+			
+			\begin{multicols}{2}
+				\subsubsection{$\log$}
+					\begin{itemize}
+						\item $y = \log_a x \Leftrightarrow x = a^y$
+					  	\item $\log_a 1 = 0$
+						\item $y \log x = \log{x^y}$
+					  	\item $\log_a a^x = x$
+					  	\item $a^{\log_a x} = x $
+					 	\item $\log_a xy = \log_a x + \log_a y$
+						\item $\log_a \frac{1}{x} = - \log_a x$
+						\item $\log_a x^r = r \log_a x$
+					  	\item $\log_a x = \frac{\log_b x}{\log_b a}$
+						\item $\log_a x = \frac{\ln x}{\ln a}$
+						\item $\log_a (x+y) = \log_a x + log_a (1 + \frac{y}{x})$
+						\item $\log_a (x-y) = \log_a x + \log_a (1- \frac{y}{x})$
+					\end{itemize}
+					\columnbreak
+					
+				\subsubsection{$e^x$}
+					\begin{itemize}
+					  	\item $e^{-\inf} = 0$
+					 	\item $e^0 = 1$
+						\item $e^1 = e =  2.718281828\ldots$
+						\item $e^{\inf} = \inf$
+						\item $e^{a+bi} = e^a(\cos(b) + i \sin(b))$
+						\item $e^{b \ln(a)} = a^b$
+						\item $ e^{-\ln(b)} = \frac{1}{b}$ 
+						\item[]\item[]\item[]\item[]
+					\end{itemize}
+			\end{multicols}
+			
+			\subsubsection{$<$, $\leq$, $\geq$, $>$}
+				\begin{itemize}
+  					\item $a < b \to a + c < b + c$ und $a - c < b - c$
+  					\item $a < b$ und $c > 0 \to \frac{a}{c} < \frac{b}{c}$
+  					\item $a < b$ und $c < 0 \to \frac{a}{c} > \frac{b}{c}$ 
+  					\item Dreiecksungleichung für reelle Zahlen: $|a+b| \le |a|{+}|b|$
+  					\item Cauchy-Schwarz Ungleichung: $|x \cdot y| \leq \|x\| \cdot \|y\|, \; x,y \in \R^n$
+				\end{itemize}
+				
+			\subsubsection{$\lim$}
+				\begin{itemize}
+					\item $\lim_{n \to \infty}{a_n\pm b_n}= a\pm b$
+					\item $\lim_{n \to \infty}{c\cdot a_n} = c\cdot a$
+					\item $\lim_{n \to \infty}{a_n b_n} = a b$
+					\item $\lim_{n \to \infty}{(a_n)^c} = (\lim_{n \to \infty}{a_n})^c$ falls $c\neq n$
+					\item $\lim_{n \to \infty}{\frac{a_n}{b_n}} = \frac{a}{b}$
+				\end{itemize}
+			\subsubsection{$\sum$}
+				\begin{itemize}
+					\item $\sum_{n=1}^\infty{a_n}= a, \sum_{n=1}^\infty{b_n}=b \Rightarrow \sum_{n=1}^\infty{\alpha a_n+\beta b_n} = \alpha a + \beta b$ bei Konvergenz
+					\item $\sum_{k,l=1}^\infty a_k b_l = \sum_{k=1}^\infty a_k \cdot \sum_{l=1}^\infty b_l$ bei absoluter Konvergenz
+				\end{itemize}
+			
+				
+								
+	\section{Zahlen, Vektoren}				
+		\subsection{Supremum, Infimum}
+			Eine Menge $A$ heisst \textbf{abgeschlossen}, wenn der ''Rand`` zur Menge gehört.\\
+			Abgeschlossene Menge $\Longleftrightarrow$ Maximum und Minimum existieren.\\
+			Eine Menge $A$ heisst nach oben [nach unten] beschränkt falls $\exists b \in \R ~ \forall a \in A : a \leq [\geq]b $.\\
+			Die kleinste [grösste] solche Schranke heisst \textbf{Supremum [Infimum]}.\\
+			Beweis für Supremum [Infimum]:
+			\[ \sup [\inf]A - A \geq [\leq]0 \]
+			Das Maximum [Minimum] einer Menge ist gleichzeitig ihr Supremum [Infimum].\\
+			Eine Menge $A$ heisst \textbf{kompakt}, wenn sie abgeschlossen und beschränkt ist.\\
+			\textbf{Archimedes Prinzip}:
+			Zu jeder Zahl $0<b\in \R$ gibt es ein $n\in \N$ mit $b<n$.
+			\[ \forall x < 0 ~\forall y \exists n \in \Z : (n-1)x\leq y < nx \]
+			Folgerungen des Prinzips:
+			\[ \forall\varepsilon > 0 ~\exists n \in \N, n\geq 1 : ~0 < \frac{1}{n} < \varepsilon\]
+			\[ \forall a,b \in \R, a < b ~\exists r \in \Q :~ a<r<b \]
+		
+		\subsection{Euklidischer Raum}
+			n-dimensionale euklidische Raum:
+			\[ \R^n = \{x = (x_1, \ldots, x_n); x_k \in \R, 1\leq k \leq n \} \]
+			Addition:
+			\[ x+y = (x_1 + y_1, \ldots, x_n+y_n), \forall x = (x_1, \ldots, x_n), y = (y_1, \ldots, y_n) \in \R^n \]
+			Skalarmultiplikation
+			\[ \lambda x = (\lambda x_1, \ldots, \lambda x_n), \forall x = (x_1, \ldots, x_n) \in \R^n, \lambda \in \R \]
+			Skalarprodukt ($x=(x_i)_{1\leq i\leq n}, y = (y_i)_{1 \leq i \leq n} \in \R^n$):
+			\[ x \cdot y = x_1 y_1+\ldots+x_n y_n = \sum_{i = 1}^{n} x_i y_i \in \R ~~\textrm{(Skalarprodukt $= 0 \to x \bot y$)}\]	
+			Euklidische Norm
+			\[ ||x|| := \sqrt{x\cdot x} = \sqrt{\sum_{i=1}^n}x_i^2 ~~\textrm{(positive Wurzel)}\]
+			Cauchy-Schwarz
+			\[ \forall x, y \in \R^n : |x\cdot y| \leq ||x|| \cdot ||y|| \]
+		
+		\subsection{Komplexe Zahlen}
+			\label{subsec:komplexnumbers}
+			Komplexe Mulitplikation
+			\[ \cdot : \R^2 \times \R^2 \ni (a,b),(c,d) \to (ac-bd,ad+bd) \in \R^2 \]
+			Multiplikatives Inverses (zu $ (a,b) $):
+			\[ \left(\frac{a}{a^2+b^2}, \frac{-b}{a^2+b^2}\right) \]
+			Imaginäre Einheit $i$
+			\[ i = (0,1), i^2 = (-1,0) = -1 \]
+			Darstellung
+			\[ z = (x,y) \in \C  = x + iy,~~x= \Re{z}, y=\Im{z}\]
+			Konjugation (zu $z = x+iy$)
+			\[ \overline{z} = x-iy \in \C \]
+			Eigenschaften
+			\[ z\cdot \overline{z} = ||z||^2 \]
+			\[ \overline{z_1+z_2} = \overline{z_1} + \overline{z_2}, ~~\overline{z_1 z_2} = \overline{z_1}\cdot \overline{z_2} \]
+			\[ ||zw|| = ||z||||w|| \]
+			Polarform (für $z=x+iy \in \C$)
+			\[ r = |z|, x = r cos{\phi}, y = r sin{\phi} \]
+			\[ z = r(\cos{\phi}\sin{\phi}) = r e^{i\phi}\]
+			q-te Wurzel ($z = \sqrt[q]{w}$)
+			\[ z = e^{i\frac{2\pi k}{q}}, k = 0,\ldots,q-1\]
+		
+	\section{Funktionen}
+			\begin{table}[h!]
+				\setlength{\extrarowheight}{1.5pt}
+				\begin{tabular}{ p{3cm}  p{8.75cm}}
+					$ f : X \to Y $ & Definitionsbereich: X, Wertebereich: Y, Abbildung: $ x \to f(x) $ \\
+					Identität & $ id_X : X \to X, x \to x = id_X (x) $ \\
+					Injektivität & $ \forall x_1, x_2 \in X : f(x_1) = f(x_2) \to x_1 = x_2 $ \\
+					Surjektivität & $ \forall y \in Y \exists x \in X : f(x) = y $ \\
+					Bijektivität & Gleichzeitig injektiv und surjektiv
+				\end{tabular}
+			\end{table}
+			
+			
+		\subsection{Konvergenz}
+			\subsubsection{Punktweise Konvergenz}
+				Eine Funktionenfolge $f_n$ ist punktweise konvergent, falls für jedes Element $x$ des Definitionsbereich $D_f$ $f_n(x)$ gegen den Funktionswert einer Grenzfunktion $f(x)$ konvergiert.
+				\[ \forall x \in D_f \lim_{n\to \infty}{f_n(x) = f(x)} \]
+				\textbf{Beispiel:}\quad Die Folge $f_n$ mit $f_n(x): x \to x^n$ im Intervall $[0,1]$ konvergiert punktweise gegen die Funktion $f$ mit
+				$f(x) = \left \{ \begin{array}{l l} 0, & x<1 \\ 1, & x=1\end{array}\right.$, denn es gilt $\lim_{n\to \infty}{x^n = 0}$ für alle $x\in[0,1)$ und $\lim_{n \to \infty}{1^n} = 1$. 
+			\subsubsection{Gleichmässige Konvergenz}
+				Eine Funktionenfolge $f_n$ ist gleichmässig konvergent, falls für alle $\varepsilon > 0$ ein $N$ existiert sodass gilt:
+				\[ \forall n > N~\forall x \in D_f: |f(x)-f_n(x)|< \varepsilon\]
+				\textbf{Vorgehen:}\quad Falls $D_f$ beschränkt, grössten Wert einsetzen, versuchen nach oben abzuschätzen und Abschätzung zu z.B. Nullfolge führen. Falls $D_f$ unbeschränkt, versuchen zu zeigen, dass $f_n(x)$ nicht beschränkt ist (z.B. $x=n$ setzen).
+			
+		\subsection{Stetigkeit}
+			\subsubsection{Lipschitz stetig}
+				Eine Funktion $f:\Omega \subset \R^d \to \R^n$ heisst \textrm{Lipschitz stetig} mit \textrm{Lipschitzkonstante} $L$, falls gilt:
+				\[ ||f(x)-f(y)|| \leq L ||x-y||,~\forall x,y \in \Omega \]
+				Sei $f$ Lipschitz stetig mit $L\geq 0 \Longrightarrow$ $f$ ist stetig (ergänzbar) an jeder Stelle $x_0$.\\
+		
+			\subsubsection{Stetige Funktionen}
+				$f$ heisst \textrm{stetig} an der Stelle $x_0$, falls $a:=\lim_{x\to x_0}{f(x)}$ existiert mit $a = f(x_0)$.\\
+				$f$ heisst stetig, falls $f$ in jedem Punkt $x_0$ stetig ist.\\
+		
+			\subsubsection{Zwischenwertsatz}
+				Seien $-\infty < a <b<\infty$, sei $f:[a,b]\to \R$ stetig und $f(a)\leq f(b)$. Dann gibt es zu jedem $y\in[f(a),f(b)]$ ein $x\in[a,b]$ mit $f(x) = y$.\\
+				Sei $f:]a,b[\to\R$ stetig und streng monoton wachsend mit monotonen Limes $-\infty\leq c:=lim_{x\downarrow a}{f(x)}<\lim_{x\uparrow b}{f(x)}=:d \leq \infty$. Dann ist $f:]a,b[\to]c,d[$ bijektiv und $f^{-1}$ stetig.	
+		
+		
+	\section{Folgen und Reihen}
+		\subsection{Folgen}
+			\subsubsection{Grenzwert einer Folge}
+				Die Folge $(a_n)_{n\in \N}$ konvergiert gegen ihren Grenzwert $a$ für $n \to \infty$, falls gilt
+				\[ \forall \varepsilon > 0 ~\exists n_0 = n_0 (\varepsilon) \in \N ~\forall n \geq n_0 : |a_n - a| < \varepsilon \]
+				Eine Folge ist \textbf{konvergent}, falls sie einen Grenzwert hat, ansonsten \textbf{divergent}.\\
+				Einige Grenzwerte:
+				\[ q\in \R\textrm{ mit }0<q<1: \lim_{n \to \infty}{q^n} = 0 \]
+				\[ \lim_{n \to \infty}{\sqrt[n]{n}} = 1 \]
+				Monotone Konvergenz ($(a_n) \subset \R$ nach oben beschränkt durch $b\in \R$und monoton wachsend):
+				\[ a_1 \leq a_2 \leq \cdots \leq a_n \leq a_{n+1} \leq \cdots \leq b,~\forall n \in \N \Longrightarrow (a_n)\textrm{ ist konvergent und} \lim_{n \to \infty}{a_n} = \sup_{n\in\N}{a_n}\]
+				
+			\subsubsection{Teilfolgen, Häufungspunkte}
+				Sei $\Lambda \subset \N$ eine unendliche Teilmenge, $\N \ni n \to l(n) \in \Lambda$ eine monoton Abzählung von $\Lambda$. Dann ist die Folge $(a_l)_{l\in\Lambda} = (a_{l(n)})_{n\in\N}$ eine \textbf{Teilfolge} von $(a_n)_{n\in\N}$.\\
+				$a \in \R$ heisst \textbf{Häufungspunkt} von $(a_n)_{n\in\N}$, falls $(a_n)_{n\in\N}$ eine gegen $a$ konvergente Teilfolge bezitzt: $a = \lim_{l \to \infty, l \in \Lambda}{a_l}$.\\
+				\textbf{Limes superior [inferior]}: Grösster [kleinster] Grenzwert einer konvergenten Teilfolge.\\
+				\textbf{Bolzano Weierstrass}: Jede beschränkte Folge $(a_n)_{n\in\N}$ besitzt eine konvergente Teilfolge, also auch einen Häufungspunkt.
+			
+			\subsubsection{Cauchy-Kriterium}
+				Eine Folge $(a_n)_{n\in\N}$ heisst Cauchy-Folge, falls:	
+				\[ \forall \varepsilon > 0 ~\exists n_0 = n_0(\varepsilon) \in \N~ \forall n,l \geq n_0:|a_n-a_l| < \varepsilon \]
+				Chauchy-Folge $\Longleftrightarrow$ konvergente Folge
+		
+		\subsection{Reihen}
+			\subsubsection{Definition}
+				Sei $(a_n)_{n\in\N}$ eine Folge, dann kann man die Partialsumme $s_n := a_0 + a_1 + \ldots + a_n = \sum_{k=0}^n{a_k}, n \in\N$ definieren.
+				Die Folge $(s_n)$ dieser Partialsummen heisst \textbf{Reihe}.
+				
+			\subsubsection{Konvergenzverhalten}
+				\textbf{Cauchy-Kriterium}: Die Reihe $\sum_{k=1}^\infty{a_k}$ ist konvergent genau dann, wenn
+				\[ \left|\sum_{k=l}^\infty{a_k}\right| \to 0, (n\geq l, l\to \infty) \]
+				\textbf{Nullfolgekriterium}: $\displaystyle\lim_{k \to \infty}{a_k} = 0$ notwendig für Konvergenz (nicht hinreichend).\\
+				\textbf{Quotientenkriterum}: Sei $a_k \neq 0, k\in\N$\\
+				$ \limsup_{k\to \infty}{\left|\frac{a_{k+1}}{a_k}\right|}<1 \Longrightarrow$ Konvergenz\\
+				$ \liminf_{k\to \infty}{\left| \frac{a_{k+1}}{a_k}\right|}>1 \Longrightarrow$ Divergenz\\
+				\textbf{Wurzelkriterium}: Sei $(a_k)_{k\in\N}$ eine Folge in $\R$ oder $\C$\\
+				$\limsup_{k\to \infty}{\sqrt[k]{|a_k|}}<[>]~1 \Longrightarrow$ Konvergenz [Divergenz]\\
+				\textbf{Majorantenkriterium}: Gibt es eine konvergente Reihe $\sum_{n=0}^\infty{b_n}$ und gilt für fast alle $n$, dass $|a_n|\leq b_n$, dann konvergiert die Reihe $\sum_{n=0}^\infty{a_n}$ absolut.
+				
+			\subsubsection{Potenzreihe}
+				Sei $(c_k)_{k\in\N_0}$ Folge in $\R$ oder $\C$. Die \textbf{Potenzreihe} in $z \in\C$
+				\[ p(z) := c_0 + c_1 z+c_2 z^2+\ldots = \sum_{k=0}^\infty{c_k z^k} \]
+				Setze $a_k = c_k z^k, k\in \N$, mit $\sqrt[k]{|a_k|} = |z| \cdot \sqrt[k]{|c_k|}, k \in \N$\\
+				\textbf{Konvergenzbereich}: Die Potenzreihe $p(z) = \displaystyle\sum_{k=0}^\infty{c_k z^k}$ ist konvergent $\forall z\in \C$ mit
+				\[ |z| < \rho := \frac{1}{\displaystyle\limsup_{k\to \infty}{\sqrt[k]{|c_k|}}} \in [0,\infty] \]
+				\textbf{Absolute Konvergenz}: Die Reihe $\displaystyle\sum_{k = 1}^\infty {a_k}$ konvergiert absolut, falls $\displaystyle\sum_{k = 1}^\infty {|a_k|}$ konvergiert.\\
+				\textbf{Konvergenzradius}: Quotientenkriterium ''umdrehen``, berechnen (i.e. $\rho =\lim_{n\to\infty}{\frac{a_n}{a_{n+1}}}$).
+				
+			\subsubsection{Geometrische Reihe}
+				$\displaystyle\sum_{k=0}^\infty{a_0 q^k}= \frac{a_0}{1-q},~ \forall |q|<1$
+			
+			
+	\section{Differentialrechnung auf $\R$}
+		\subsection{Differential und Differentiationsregeln}				
+			$f$ \textrm{differenzierbar} in $x_0 \to\displaystyle f'(x_0):=\lim_{x\to x_0, x\neq x_0}{\frac{f(x)-f(x_0)}{x-x_0}}$ existiert, $f$ stetig in $x_0$. ($\mathbf{\nLeftarrow}$)\\
+			$t_0$ ist ein \textbf{kritischer Punkt} von $f$, wenn$f'(t_0)=0$.
+			
+			\subsubsection{Ableitungsregeln}
+				\begin{table}[h!]
+					\setlength{\extrarowheight}{1.5pt}
+					\begin{tabular}{ p{2.5cm}  p{9.25cm}}
+						Additionsregel & $(f+g)'(x_0)=f'(x_0)+g'(x_0)$\\
+						Multiplikationsregel & $(f\cdot g)'(x_0)=f'(x_0)\cdot g(x_0)+f(x_0)\cdot g'(x_0)$\\
+						Quotientenregel & $(f / g)'(x_0)=\frac{f'(x_0)\cdot g(x_0)-f(x_0)\cdot g'(x_0)}{g^2(x_0)}$\\
+						Kettenregel & $(g\circ f)'(x_0)=g'(f(x_0))\cdot f'(x_0)$\\
+					\end{tabular}
+				\end{table}
+			
+			\subsubsection{Bernoulli-de l'Hospital}
+				Falls $\displaystyle\lim_{x\downarrow a}{\frac{f'(x)}{g'(x)}}=:A$ existiert, dann ist ebenfalls $\displaystyle\lim_{x\downarrow a}{\frac{f(x)}{g(x)}}= A$.\\
+		
+		\subsection{Mittelwertsatz}
+			Sei $f:[a,b]\to \R$ stetig und im Inneren von $[a,b]$ differenzierbar. Dann gibt es einen Punkt $\varrho\in]a,b[$ mit $f'(\varrho)=\frac{f(b)-f(a)}{b-a}$.\\
+			Sei $f:[a,b]\to \R$ stetig und im Inneren von $[a,b]$ differenzierbar. Besitzt die Ableitung $f'(x)$ der Funktion $f(x)$ innerhalb des Intervalls $[a,b]$ $n$ Nullstellen, so hat die Funktion $f(x)$ im Intervall höchstens derer $n+1$.\\
+			Satz von Rolle: $f(a)=f(b) \to \exists \varrho: f'(\varrho)=0$.
+		\subsection{Konkav, konvex}
+			Eine Funktion $f$ heisst konkav [konvex] auf einem Intervall $I$, falls $\forall x \in I: f''(x)< [>] 0$. $\displaystyle \frown [\smile]$\\
+			
+		\subsection{Funktionen der Klasse $C^1$}
+			$f$ heisst von der Klasse $C^1$, falls $x\to f'(x)$ stetig ist.
+			
+		\subsection{Taylor-Polynom}
+			Das Taylor-Polynom $n$-ter Ordnung für $f(t)$ an der Stelle $a$ mit Restterm $R_n (t)$:\\
+			$\displaystyle T_n f(t;a) = \sum_{k=0}^n{\frac{f^{(k)}(a)}{k!}(t-a)^k} $ und 
+			$\displaystyle R_n (t) = \frac{f^{(n+1)}(\tau)}{(n+1)!}(t-a)^{n+1}\textrm{ mit } \tau\in(a,t). $\\
+			
+	\section{Integralrechnung auf $\R$}
+		\subsection{Integrationsregeln}
+			\textbf{Partielle Integration:} $\displaystyle \int \! u v' \dif{x} = u v - \int \! u' v \dif{x} $\\
+			
+			\textbf{Substitution:}
+			\begin{table}[h!]
+				\setlength{\extrarowheight}{1.5pt}
+				\begin{tabular}{ p{.25cm}  p{7.25cm} p{6cm}}
+					~~$-$ & Substituieren &	$\int_0^\pi \! \sin{(2x)}\dif{x},~ z = 2x$\\
+					~~$-$ & Substitution ableiten, nach $\dif{x}$ auflösen & $\frac{\dif{z}}{\dif{x}} = 2,~ \dif{x} = \frac{dz}{2}$\\
+					~~$-$ & Einsetzen in unbestimmtes Integral, lösen & $\int \! \frac{1}{2}\sin{z} \dif{z} = -\frac{1}{2}\cos{z}+C$\\
+					~~$-$ & Rücksubstituieren & $-\frac{1}{2}\cos{2x}+C$\\
+					($-$ &  Hauptsatz anwenden) & $-\frac{1}{2}\cos{2x}\Big|_0^\pi = \cos{2\pi}-\cos{0} = 0$\\
+				\end{tabular}
+			\end{table}\\
+			
+			\textbf{Weitere Regeln:}
+				\begin{itemize}
+					\setlength{\itemsep}{-5pt}
+					\item $\int f(a + x) \dif{x} = F(a+x)$
+					\item $\int f(a - x) \dif{x} = -F(a-x)$
+					\item $\int f(\alpha x) \dif{x} = \frac{1}{\alpha}F(\alpha x)$
+					\item $\int \frac{g'(x)}{g(x)} \dif{x} = \ln{|g(x)|}$
+					\item $\int g(x) g'(x) \dif{x} = \frac{1}{2} g^2(x)$
+				\end{itemize}
+						
+		\subsection{Rotationsvolumen}
+			\subsubsection{Rotation um x-Achse}
+				Rotation der Funktion $f$ im Intervall $[a,b]$ um die x-Achse: 
+				$\displaystyle V_x = \pi \int_a^b \! f^2(x) \dif{x}$\\
+				
+			\subsubsection{Rotation um y-Achse}
+				Rotation der Fläche zwischen $G_f$ und x-Achse um y-Achse: 
+				$\displaystyle V_y = 2\pi \int_a^b \! x f(x) \dif{x}$\\
+				Rotation der Fläche zwischen $G_f$ und y-Achse um y-Achse: 
+				$\displaystyle V_y = \pi \int_a^b \! x^2 f'(x) \dif{x}$\\
+				
+		\subsection{Bogenlänge}
+			Länge $L$ der Funktion $f$ auf dem Intervall $[a,b]$: 
+			$\displaystyle L=\int_a^b\!\sqrt{1+\big[f'(x)\big]^2}\dif{x}$
+			
+			
+	\section{Differentialgleichung}
+		\subsection{DGL 1. Ordnung}
+			\subsubsection{Homogener Teil (Separation der Variablen)}
+				\begin{itemize}
+					\setlength{\itemsep}{-5pt}
+					\item $y'$ konsequent als $\frac{\dif{y}}{\dif{x}}$ schreiben
+					\item Alle Terme mit $x$ (inkl. $\dif{x}$) auf die eine, alle Terme mit $y$ (inkl. $\dif{y}$) auf die andere Seite
+					\item Rechts und links integrieren, auflösen nach $y$
+					\item Konstante $C$ mittels AW bestimmen (AW einsetzen, ausrechnen).
+				\end{itemize}
+			
+			\subsubsection{Inhomogener Teil (Variation der Konstanten)}
+				\label{sec:DGLInhom}
+				\begin{itemize}
+					\setlength{\itemsep}{-5pt}
+					\item Homogener Teil mittels Separation der Variablen lösen (Konstante stehen lassen!)
+					\item Konstante $C$ als Funktion $C(t)$ betrachten
+					\item Ableiten und in ursprüngliche DGL einsetzen
+					\item Nach $C'(t)$ auflösen, integrieren, Lösung in homogenen Teil einsetzen für $C(t)$
+				\end{itemize}
+		
+		\subsection{DGL 2. Ordnung}
+			\subsubsection{Homogener Teil (Charakteristische Gleichung)}
+				DGL: $ay''+by'+cy=0$\\
+				Einsetzen in charakteristischer Gleichung $ak^2+bk+c=0$, auflösen mittels $\displaystyle k_{1,2}=\frac{-b\pm\sqrt{b^2-4ac}}{2a}$.\\
+				\begin{table}[h!]
+					\setlength{\extrarowheight}{1.5pt}
+					\begin{tabular}{ p{3.5cm}  p{7.25cm}}
+						$\mathbf{k_1, k_2 \in \R, k_1 \neq k_2}$ & $y = C_1 e^{k_1 x}+C_2 e^{k_2 x}$\\
+						$\mathbf{k_1, k_2 \in \R, k_1 = k_2}$ & $y = C_1 e^{k x} + C_2 x e^{k x}$\\
+						$\mathbf{k_1, k_2 \in \C, k = \alpha \pm i \beta}$ & $y = e^{\alpha x} \left( C_1 \cos{\beta x} + C_2 \sin{\beta x} \right)$\\
+					\end{tabular}
+				\end{table}
+			
+			\subsubsection{Inhomogener Teil (Variation der Konstanten)}
+				Siehe Kapitel \ref{sec:DGLInhom} für Verfahren.
+				
+		\subsection{DGL 3. Ordnung}
+			\begin{itemize}\setlength{\itemsep}{-5pt}
+				\item Eine Lösung $k_1$ erraten
+				\item Polynomdivision:$\frac{a k^3+b k^2+c k+d}{k-k_1} = a'k^2+b'k+c'$
+				\item Mit $a'k^2+b'k+c'$ fortfahren wie DGL 2. Ordnung
+				\item Alles addieren ($C_1 e^{k_1 t} + L \ddot{o} sung_{a'k^2+b'k+c'}$)
+			\end{itemize}
+			
+			
+	\section{Kurvenintegral}
+		\subsection{1. Art}
+			Das Wegintegral einer stetigen Funktion $f: \R^n \to \R$ entlang eines stetig differenzierbaren Weges $\gamma: [a,b] \to \R^n$ ist definiert durch:
+			\[\int_\gamma f \dif{s} := \int_a^b f(\gamma(t)) \|\gamma(t)'\|_2 \dif{t}\]
+
+			Euklidische Norm: $\|\vec{a}\|_2 = \sqrt{a_x^2 + a_y^2 + \ldots}$. \\
+			Beim Integral muss man zuerst $\gamma(t)$ nach $t$ ableiten und erst dann die Norm davon berechnen.\\\\
+			\textbf{Beispiel}\quad Es sei die Schraubenlinie $\gamma : [0,2\pi]  \to \R^3, \gamma : t \to  (\cos(t), \sin(t), t)$ und $f(x,y,z) := x^2 + y^2 + z^2$ gegeben. Wir berechnen $\int_\gamma f \dif{s}$. Zunächst bestimmen wir
+			\begin{align*}
+				\|\gamma(t)'\|_2 &= \sqrt{\left[\cos'{(t)}\right]^2 + \left[\sin'{(t)}\right]^2 + \left[t'\right]^2} \\ &= 						\sqrt{\sin^2(t)+\cos^2(t)+1}=\sqrt{2}
+			\end{align*}
+			Dann substituieren wir x,y und z und erhalten
+			\[f(x,y,z) = f(\gamma(t)) = \sin^2(t)+\cos^2(t)+t^2 = 1 +t^2\]
+			auf $\gamma$. Das führt zu
+			\begin{align*}
+				\int_\gamma f(x,y,z) ds &= \int_0^{2\pi} (1 +t^2)\sqrt{2} dt = \left. \sqrt{2}(t+\frac{t^3}{3}) \right|_0^{2\pi} \\
+				&= \frac{2\sqrt{2}\pi}{3}(3+4\pi^2)
+			\end{align*}
+			
+		\subsection{2. Art}
+			Das Wegintegral über ein stetiges Vektorfeld $\vec{f}: \R^n \to \R^n$ entlang eines stetig differenzierbaren Weges $\gamma: [a,b] \to \R^n$ ist definiert durch:
+			\[\int_\gamma \vec{f}(\vec{x}) d\vec{x} := \int_a^b \left< \vec{f}(\gamma(t)), \gamma(t)' \right> \dif{t}\]
+			Skalarprodukt: $\left< \vec{a}, \vec{b} \right> = a_x b_x + a_y b_y + \ldots$\\\\
+			\textbf{Beispiel} Berechne des Linienintegral $\int_\gamma \vec{K} d\vec{x} $ für $ \vec{K}(x,y) = (x^2+y, 2xy)$ und $\gamma$ als Einheitskreis mit positivem Umlaufsinn.
+			Gegeben:
+			\begin{align*}
+				\vec{K}(x,y) &= (x^2+y, 2xy) \\
+				\gamma &: [0,2\pi]  \to \R^2 \\
+				\gamma &: t \to   (\cos(t), \sin(t)) 
+			\end{align*}
+			Zu berechnen:
+			\begin{eqnarray*}
+				\gamma(t)' &=& (-\sin(t),\cos(t)) \\
+				\vec{K}(\gamma(t)) &=& (\cos^2(t) + \sin(t), 2 \cos(t)\sin(t)) \\
+				\left< \vec{K}(\gamma(t)), \gamma(t)' \right> &=& -\cos^2(t)\sin(t) - \sin^2(t) + 2\cos^2(t)\sin(t) \\
+				&=& \cos^2(t)\sin(t) - \sin^2(t)
+			\end{eqnarray*}
+			\begin{eqnarray*}
+				\int_\gamma \vec{K} d\vec{x} &=& \int_0^{2\pi} \left< \vec{K}(\gamma(t)), \gamma(t)' \right> \dif{t} \\
+				&=& \int_0^{2\pi} \cos^2(t)\sin(t) - \sin^2(t) \dif{t} \\
+				&=& \left. -\frac{1}{3}\cos^3(t) - \frac{1}{2}t + \sin(t)\cos(t) \right|_0^{2\pi} = \underline{\underline{-\pi}}
+			\end{eqnarray*}
+
+		\subsection{Parametrisierung von Kurven}
+			Skizze machen, um Grenzen und Kurve besser zu verstehen und schneller auf die Parametrisierung zu kommen.
+			\begin{itemize}
+				\item Wenn die Kurve in der Form $C = \{\vec{r} \in \R^n | \vec{r} = \gamma(t), a \leq t \leq b\}$ bereits gegeben, so ist klar, dass $\gamma(t)$ der Weg ist und das Integral von $a$ nach $b$ verläuft.
+				\item Die Parametrisierung einer Strecke von $\vec{a}$ nach $\vec{b}$: $\gamma(t) = \vec{a} + t(\vec{b}-\vec{a}), \quad 0 \leq t \leq 1$
+	
+				\item Die Parametrisierung eines Kreises mit Mittelpunkt $(x_0, y_0)$ und Radius $r$ ist \\
+					$\gamma(t) = \begin{pmatrix} x_0 + r \cos(t)\\ y_0 + r \sin(t) \end{pmatrix}$. Für einen vollen Kreis gilt $0 \leq t \leq 2\pi$, für Kreisteil schränkt man diesen Intervall entsprechend ein.
+	
+				\item Parametrisierung eines Graphen der Funktion $f(x)$ für $x\in[a,b]$: $\gamma(t) = \begin{pmatrix}t\\f(t)\end{pmatrix},\quad a \leq t \leq b$\\
+				Hat man zwei Graphen, die als Grenzen für das Kurvenintegral fungieren, so schliessen diese gemeinsam eine Fläche ein. Die Umlaufrichtung ist so zu wählen, dass diese Fläche jeweils links liegt.
+			\end{itemize}
+
+			\textbf{Beispiel}\quad Kurvenintegral mit zwei Grenzgraphen\\
+			Es soll das Kurvenintegral $\int_\gamma K(x,y)\;dt = \int_\gamma \begin{pmatrix}x^2 - y^2\\2y -x\end{pmatrix}\;\dif{t}$ berechnet werden. $\gamma$ ist der Rand des beschränkten Gebietes im ersten Quadranten, welches durch die Graphen $y=x^2$ und $y=x^3$ begrenzt wird.
+	
+			Lösung: Man macht eine Skizze der Grenzen ($y=x^2$ und $y=x^3$) und sieht, dass diese eine Fläche einschliessen. Die Schnittpunkte sind $x = 0$ und $x = 1$. Der Rand dieses Gebiets besteht also aus den beiden parametrisierten Kurven (Parametrisierung für Graphen verwenden)
+			\begin{align*}
+				\gamma_1(t) &= \begin{pmatrix}t\\t^3\end{pmatrix} & t \in [0,1]\\
+				\gamma_2(t) &= \begin{pmatrix}t\\t^2\end{pmatrix} & t \in [0,1]
+			\end{align*}
+	
+			Wir sehen, dass die eingeschlossene Fläche in Durchlaufrichtung von $\gamma_1$ links liegt, was soweit gut ist. Bei $\gamma_2$ liegt die Fläche aber auf der rechten Seite, weshalb wir die Durchlaufrichtung drehen müssen, was zu $\gamma = \gamma_1 - \gamma_2$ führt (man beachte das Minus statt einem Plus). Jetzt muss nur noch ganz normal das Wegintegral berechnet werden: $\int_\gamma K\;\dif{x} = \int_{\gamma_1} K\;\dif{x} + \int_{-\gamma_2} K\;\dif{x} = \int_{\gamma_1} K\;\dif{x} - \int_{\gamma_2} K\;\dif{x} = \ldots$
+
+		\subsection{Berechnung}
+			Die Berechnung findet in drei Schritten statt:
+			\begin{enumerate}
+				\item Parametrisierung der Kurve $C$ als $C = \{\vec{r} \in \R^n | \vec{r} = \gamma(t), a \leq t \leq b\}$
+				\item Einsetzen ins Integral: $\int_C f(\vec{r})\,\dif{s} = \int_a^b f(\gamma(t)) \|\gamma(t)'\|\,\dif{t}$. Man setzt also für die Variabeln von $f$ die Komponenten von $\gamma$ ein und multipliziert dies dann mit dem Betrag der Ableitung nach $t$ von $\gamma$.
+				\item Integral ausrechnen.
+			\end{enumerate}
+
+		\subsection{Bogenlänge}
+Für die Bogenlänge L, auf dem Weg beschrieben durch $x(t)$ und $y(t)$, ergibt sich:
+\[
+	L = \int ds = \int_a^b \sqrt{\dot{x}^2 + \dot{y}^2} dt
+\]
+Spezialfall Funktionsgraph:
+\[
+	L(a,b) = \int_{a}^{b}\sqrt{1+(f'(x))^2} dx
+\]
+
+		\subsection*{Strecke}
+			Arbeit durch das Vektorfeld entlang der Strecke von $P_1$ nach $P_2$ ist auch $f(P_2) - f(P_1)$, wenn $\vec{v}$ ein Potentialfeld ist und $f$ das Potential davon.
+	
+	\section{Differentialrechnung in $\R^n$}
+		Hier geht es um Funktionen $f: \R^n \to \R^m$, wobei $m=1$ gelten kann ($f: \R^n \to \R$). Solche Funktionen haben die allgemeine Form:
+		$f(x) = f(x_1, x_2, x_3, \ldots, x_n) =
+		\begin{pmatrix}
+			f_1(x_1, x_2, x_3, \ldots, x_n)\\
+			f_2(x_1, x_2, x_3, \ldots, x_n)\\
+			\ldots\\
+			f_m(x_1, x_2, x_3, \ldots, x_n)
+		\end{pmatrix}$
+
+		Für nahezu alle Eigenschaften gilt: Die Vektorfunktion $f: \R^n \to \R^m$ hat eine bestimmte Eigenschaft, wenn jede einzelne ihrer Komponenten ($f_1, f_2, \ldots, f_m$) die besagte Eigenschaft besitzen. Das Problem liegt neu also nicht im Wertebereich, sondern vor allem in Definitionsbereich.
+
+		\subsection{Norm}
+			Eine Norm auf $\R^n$ ist die Funktion $\|\cdot\|: \R^n \to \R$ mit den folgenden Eigenschaften:
+			\begin{itemize}
+				\item $\forall x \in \R^n: \|x\| \geq 0$
+				\item $\forall x \in \R^n: \|x\| = 0 \Leftrightarrow x = \vec{0}$
+				\item $\forall x \in \R^n, \alpha \in \R: \|\alpha x\| = |\alpha| \|x\|$
+				\item $\forall x,y \in \R^n: \|x + y\| \leq \|x\|+\|y\|$
+			\end{itemize}
+
+		\subsection{Partielle Differenzierbarkeit}
+			$f: \R^n \to \R^m$ ist in $a = (a_1, \ldots, a_n)$ partiell differenzierbar nach der $i$-ten Variable $x_i$, wenn die Funktion $f: x_i \to f(x_1, \ldots, x_i, \ldots, x_n)$ differenzierbar ist. Man berechnet die partielle Ableitung also folgendermassen: Eine Funktion $f$ wird nach einer Variable partiell differenziert, indem man alle anderen Variablen als Konstanten behandelt und die Rechenregeln für Funktionen mit einer Variable anwendet.
+
+		\textbf{Satz von Schwarz:}\quad	Ist $f$ nach $x$ und $y$ zweimal partiell differenzierbar und sind die gemischten partiellen Ableitungen $f_{xy}$ und $f_{yx}$ stetig, so gilt: $f_{xy} = f_{yx}$.
+	
+		\subsection{Jacobi-Matrix}
+			Auch Funktionalmatrix, Ableitungsmatrix einer differenzierbaren Funktion $f: \R^n \rightarrow \R^m$ ist die $m \times n$ Matrix sämtlicher erster partieller Ableitungen.
+			\[J_f(a) :=
+				\begin{pmatrix}
+					\frac{\partial f_1}{\partial x_1}(a) & \frac{\partial f_1}{\partial x_2}(a) & \ldots & \frac{\partial f_1}{\partial x_n}(a)\\
+					\vdots & \vdots & \ddots & \vdots\\
+					\frac{\partial f_m}{\partial x_1}(a) & \frac{\partial f_m}{\partial x_2}(a)& \ldots & \frac{\partial f_m}{\partial x_n}(a)\\
+				\end{pmatrix}
+			\]
+
+			\textbf{Transformationssatz:}\quad Es sei $\Omega \in \R^d$ eine offene Menge und $\Phi: \Omega \rightarrow \Phi(\Omega) \subset \R^d$ ein Diffeomorphismus. Dann ist die Funktion $f$ auf $\Phi(\Omega)$ genau dann integrierbar, wenn die Funktion $x \to f(\Phi(x))|det(D\Phi(x))|$ auf $\Omega$ integrierbar ist. Dann gilt $\int_{\Phi(\Omega)}f(y)dy = \int_{\Omega}f(\Phi(x))|det(D\Phi(x))|dx$.	Dabei ist $D\Phi(x)$ die Jacobi-Matrix und $det(D\Phi(x))$ die Funktionaldeterminante von $\Phi$.
+
+		\subsection{Hesse-Matrix}
+			Die Hesse-Matrix ist eine Matrix, die in der mehrdimensionalen reellen Analysis ein Analogon zur zweiten Ableitung einer Funktion ist. Ist die Funktion zweimal stetig differenzierbar kann die Hesse-Matrix gebildet werden. Eine Hesse-Matrix ist symetrisch.
+
+			Für eine Funktion $f(x,y)$ sieht die Hesse Matrix wie folgt aus:
+
+			$$\operatorname{H}_f=
+			\begin{pmatrix}
+				\frac{\partial^2 f}{\partial^2 x}&\frac{\partial^2 f}{\partial x\partial y}\\
+				\frac{\partial^2 f}{\partial y\partial x}&\frac{\partial^2 f}{\partial^2 y}
+			\end{pmatrix}.$$
+
+			Verallgemeinert für die Funktion $f \colon D \subset \R^n \to \R$  (die ebenfalls zweimal stetig differenzierbar sein muss), sieht die Matrix wie folgt aus:
+
+			\begin{equation}
+				\begin{split}\operatorname{H}(f)=\operatorname{H}_f= \left(\frac{\partial^2f}{\partial x_i\partial x_j}\right)_{i,j=1,\dots, n}= \\
+					\begin{pmatrix}
+						\frac{\partial^2 f}{\partial x_1\partial x_1}&\frac{\partial^2 f}{\partial x_1\partial x_2}&\cdots&\frac{\partial^2  f}{\partial x_1\partial x_n}\\[0.5em]
+						\frac{\partial^2 f}{\partial x_2\partial x_1}&\frac{\partial^2 f}{\partial x_2\partial x_2}&\cdots&\frac{\partial^2  f}{\partial x_2\partial x_n}\\
+						\vdots&\vdots&\ddots&\vdots\\
+						\frac{\partial^2 f}{\partial x_n\partial x_1}&\frac{\partial^2 f}{\partial x_n\partial x_2}&\cdots&\frac{\partial^2  f}{\partial x_n\partial x_n}
+					\end{pmatrix}.\end{split}
+			\end{equation}
+
+
+		\subsection{Kritische Punkte}
+			Berechnen von lokalen Minima und Maxima. Rand separat betrachten.
+			\begin{enumerate}
+				\item $grad(f) = 0$ ergibt kritische Punkte ($\nabla f = \vec{0}$)
+				\item Hesse-Matrix $H_f$ berechnen
+				\item Determinante berechnen
+				\item $det < 0$: Sattelpunkt
+				\item $det > 0$ und Hesse-Matrix $a_{11} > 0$: Minimum\\
+				$det > 0$ und Hesse-Matrix $a_{11} < 0$: Maximum
+				\item $det = 0$: Unbestimmt, weitere Ableitungen notwendig.
+			\end{enumerate}
+		
+			\textbf{Vektorfeld:}\quad Die Abbildung $\vec{v}(\vec{r}): \R^n \to \R^n$ ist ein Vektorfeld. Es weist jedem Vektor $\vec{r}$ einen Vektor $\vec{v}(\vec{r})$ zu.
+			
+			\textbf{Skalarfeld:}\quad Ist eine Abbildung der Form $f: \R^n \to \R$. Es existiert wenn das Vektorfeld wirbelfrei/konservativ ist. Ergibt ein geschlossener Weg im Vektorfeld nicht null so existiert kein skalares Feld (jedoch nicht unbedingt umgekehrt).
+			
+			\textbf{Gradient:}\quad Vektor zu einer Funktion, welcher in Richtung der grössten Steigung in einem Punkt zeigt und normal zur Höhenlinie liegt. Die länge des Vektors ist die Steigung des Anstiegs.\\
+			Der Gradient einer Funktion $f:\R^n \to \R$ im Punkt $a\in \R^n$ ist mit dem Standardskalarprodukt
+			\[ \nabla f = \begin{pmatrix} \frac{\dif{f}}{\dif{x_1}} \\ \vdots \\ \frac{\dif{f}}{\dif{x_n}} \end{pmatrix} \]
+			
+			\textbf{Potential}
+				Ist $\vec{v} = \nabla f$ der Gradient von $f$, so ist $f$ das Potential oder Stammfunktion zu $\vec{v}$.
+			
+			\textbf{Gradientenfeld / Potentialfeld}
+				Ist $\vec{v} = \nabla f$ der Gradient von $f$, so ist das Vektorfeld $\vec{v}$ ein Gradientenfeld / Potentialfeld. Es besitzt dabei die folgenden Eigenschaften:
+				\begin{itemize}
+					\item Der Wert des Kurvenintegrals entlang eines beliebigen Weges innerhalb des Feldes ist unabhängig vom Weg selbst, sondern nur vom Anfangs- und Endpunkt
+					\item Ein Kurvenintegral mit einem Weg bei dem Anfangs- und Endpunkt der gleiche Punkt sind, hat den Wert 0.
+					\item Ist immer wirbelfrei: $\textrm{rot} \vec{v} = \textrm{rot}(\nabla f) = \vec{0}$
+				\end{itemize}
+			
+			\textbf{Rotor / Rotation}\quad Ist $\vec{v}$ ein Vektorfeld im $\R^3$, so ist die Rotation von $\vec{v} = (P, Q, R)^T$ das Vektorfeld
+				$\vec{w} = \textrm{rot} \vec{v} = \begin{pmatrix}
+					R_y - Q_z\\
+					P_z - R_x\\
+					Q_x - P_y
+				\end{pmatrix}$
+			
+		\subsection{Bestimmung eines Potentials im $\R^2$}
+			Sei $\vec{v} = \begin{pmatrix}
+				P(x,y)\\
+				Q(x,y)
+			\end{pmatrix}$.
+			
+			(In gewissen Fällen kann das Potential $f$ erraten werden in dem wir das Vektorfeld $\vec{v}$) partiell integrieren und dann eine Funktion f erraten, so dass $\nabla f$ wieder $\vec{v} ergibt$.)\\
+			
+			Um schnell zu prüfen, ob man überhaupt den folgenden Algorithmus anwenden muss, kann man prüfen ob gilt: $P_y = Q_x$, wenn nicht, so hat $\vec{v}$ kein Potential $f$.
+			
+			\begin{enumerate}
+				\item $f(x,y) = \int P(x,y)\;dx + C(y)$ berechnen (Integral)
+				\item Die berechnete Gleichung $f(x,y)$ nun nach $y$ ableiten: $\frac{\partial}{\partial y} f(x,y) = \frac{\partial}{\partial y}\int P(x,y)\;dx + C'(y)$ (berechnetes Integral nach $y$ ableiten)
+				\item $\frac{\partial}{\partial y} f(x,y) = Q(x,y)$ setzen und $C'(y)$ berechnen durch umformen und integrieren
+				\item Berechnetes $C(y)$ in die Gleichung im 1. Punkt einsetzen. Fertig. Achtung: Im Grunde hat $C(y)$ durch integrieren noch einen konstanten Wert, der beliebigen Wert haben kann. Dieser taucht im Grunde auch in der fertigen $f(x,y)$ Funktion auf.
+			\end{enumerate}
+			
+		\subsection{Bestimmung eines Potentials im $\R^3$}
+			Sei $\vec{v} = \begin{pmatrix}
+				P(x,y,z)\\
+				Q(x,y,z)\\
+				R(x,y,z)
+			\end{pmatrix}$.
+			
+			Um zu prüfen, ob man überhaupt ein Potential finden kann für $\vec{v}$ hat $\textrm{rot} \vec{v} = 0$ zu sein, also wirbelfrei zu sein. Dazu muss gelten (zu zeigen mit $\textrm{rot} \vec{v} = 0$): $P_y = Q_x, P_z = R_x, Q_z = R_y$.
+			
+			\begin{enumerate}
+				\item $f(x,y,z) = \int P(x,y,z)\;dx + C(y,z)$ lösen (Integral berechnen)
+				\item Nun die berechnete Gleichung $f(x,y,z)$ nach $y$ ableiten $\Rightarrow f_y(x,y,z)$.
+				\item Die abgeleitete Gleichung $f_y$ mit $Q(x,y,z)$ gleichsetzen: $f_y(x,y,z) = Q(x,y,z)$ und damit $C_y(y,z)$ bestimmen.
+				\item Durch Integration von $C_y(y,z)$ nach $y$ ($\int C_y(y,z)\dif{y}$) wird $C(y,z)$ bestimmt bis auf eine Konstante $D(z)$, die von $z$ abhängt. $C(y,z)$ hat also die Form: $C(y,z) = \int C_y(y,z) \dif{y} + D(z)$.
+				\item Dieses $C(y,z)$ setzt man nun in die Gleichung $f(x,y,z)$ ein, die im 1. Punkt steht.
+				\item Nun wird die daraus erzeugte$f(x,y,z) = \int P(x,y,z)\dif{x} + C(y,z) =$\\$\int P(x,y,z)\dif{x} + \int C_y(y,z)\dif{y} + D(z)$ Gleichung nach $z$ abgeleitet.
+				\item Durch Gleichsetzen von $f_z(x,y,z) = R(x,y,z)$ lässt sich $D_z(z)$ bestimmen.
+				\item $D_z(z)$ wird wiederrum durch Integration zu $D(z) = \int D_z(z)\dif{z} + c, \quad c \in \R$
+				\item Das berechnete $D(z)$ in die $f(x,y,z)$ Gleichung aus Punkt 6 einsetzen, fertig.
+			\end{enumerate}
+			
+		\subsection{Geometrisches Verständnis}
+			Sei B ein drei dimensionaler Körper (beschrieben durch Punkte in $\R^3$ mit der Funktion $f$) so sei $\nabla f$ senkrecht dazu.
+			
+			\subsubsection*{Beispiel}
+				Gib einen Vektoren der ein nach aussen gerichteter Normalenvektor (nicht notwendigerweise normiert) auf dem Rand des Ellipsoids ist
+				\[
+					B := 
+					\left\{ 
+						\begin{pmatrix} x\\ y\\ z \end{pmatrix} \in \R^3  
+						\middle\vert
+						f\begin{pmatrix} x\\ y\\ z \end{pmatrix} 
+						= \frac{x^2}{a^2} + \frac{y^2}{b^2} + \frac{z^2}{c^2} \leq 1
+					\right\}
+				\]
+				
+				Der Vektor $\begin{pmatrix} 2x/a^2\\ 2y/b^2\\ 2z/c^2 \end{pmatrix}$ ist gleich $\nabla f$ und steht somit senkrecht auf der Niveaufläche $f=1$. Da er vom Ursprung weg orientiert ist, liefert er die richtige Antwort.\\
+				Der Vektor $\begin{pmatrix} yz(1/b^2-1/c^2)\\ xz(1/c^2-1/a^2)\\ xy(1/a^2-1/b^2) \end{pmatrix}$ ist tangential zum Rand $\partial B$
+		
+		\subsection{Fläche unter Kurve}
+			Sei eine Kurve in der Parameterdarstellung (z.B. $x(t) = \sin(2t)$ und $y(t) = \cos(3t)$ über $0 \leq t \leq \pi$) gegeben. So ist die Fläche $A = \int_{0}^{\pi} y\dot{x} \dif{t}$ (da $\dot{x} = \frac{\dif{x}}{\dif{t}} \Rightarrow dx = \dot{x} \dif{t}$).
+		
+		\subsection{Lagrange-Multiplikator}
+			Nützlich für Extremalstellen auf dem Rand (mit Rand als Nebenbedingung).\\
+			$\lambda$ heisst Lagrange-Multiplikator.
+			Sei $p_0 \in S$ lokales Maximum oder Minimum von $f$ unter der Nebenbedingung $g(p_0) = 0$. Dann existiert $\lambda = (\lambda_1, \ldots, \lambda_l) \in \R^l$, so dass für $L = f + \lambda g$ gilt:
+			\[
+				dL(p_0) = df(p_0) + \lambda dg(p_0) = 0
+			\]
+			
+			Der Gradient von $f$ steht also senkrecht auf dem Tangentialvektor der Niveaulinie. An der Berührstelle $(x_0, y_0)$ muss daher der Gradient von f kollinear zum Normalenvektor der Nebenbedingung sein: $\begin{pmatrix}f_x\\f_y\end{pmatrix} = \lambda \begin{pmatrix} g_x\\g_y\end{pmatrix}$\\
+			Um Extrema aufzuspüren, ist daher das Gleichungssystem zu lösen:\\
+			\begin{align}
+				f_x - \lambda g_x &= 0\\
+				f_y - \lambda g_y &= 0\\
+				g(x,y) &= 0
+			\end{align}
+			Dieses Gleichungssystem erhält man auch, indem man die Lagrange-Funktion $L(x,y,\lambda) = f(x,y) + \lambda g(x,y)$ aufstellt und die partiellen Ableitungen $L_x, L_y, L_\lambda$ null setzt.
+		
+		\subsection{Massenmittelpunkt}
+			Der Massenmittelpunkt $\vec{r_s}$ ist das mit der Masse gewichtete Mittel der Ortsvektoren $\vec{r}$ aller Massepunkte $dm$ eines Körpers:
+			\[
+				\vec{r_s} = \frac{1}{M} \int_{K}\vec{r}\dif{m} = \frac{1}{M} \int_{K}\vec{r}\rho(\vec{r})\dif{V}
+			\]
+			Dabei gilt für die Masse:
+			\[
+				M = \int_{K}\rho(\vec{r})\dif{V}
+			\]
+			und für die Vektorkomponenten:
+			\[
+				\mu_x = \int_{K}x\cdot\rho(\vec{r})\dif{V}
+			\]
+			\[
+				\mu_y = \int_{K}y\cdot\rho(\vec{r})\dif{V}
+			\]
+			\[
+				\mu_z = \int_{K}z\cdot\rho(\vec{r})\dif{V}
+			\]
+			schlussendlich erhält man den Mittelpunkt $P(x,y,z) = (\frac{\mu_x}{M}, \frac{\mu_y}{M}, \frac{\mu_z}{M})$.
+							
+					
+\end{document}  
