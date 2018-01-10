@@ -10,6 +10,94 @@ Frédéric Vogel `vogelfr@ethz.ch`, ETH Zürich, HS17
 
 <p style="page-break-after:always;"></p>
 
+# Side Channels
+Some implementations of provably secure cryptosystems can be broken by observing the side information leaked by these implementations.
+
+## Timing cryptanalysis
+Cryptosystems vulnerable when
+1. *execution time* depends on key *for different input data*, and
+2. *partial execution time* can be measured
+
+### Protection
+Equalizing the time of all operations independently of the input values
+
+But:
+- Increases average time of operation
+- Difficult to build soft- and hardware that holds property
+
+#### Masking (Kocher):
+- Chose *random* $X$, different for each message $M$
+- $S = [(m X)^d \mod n] \cdot [(X^{-1})^d \mod n]$
+- $= [m^d \mod n] \cdot [(X \cdot X^{-1})^d \mod n] \mod n$
+- $= m^d \mod n$
+
+$(X^{-1})^d \mod n$ can be computed in advance
+
+#### Masking (Rivest):
+- Chose *random* $Y$
+- $S = ([m (Y^{-1})^e]^d \mod n) \cdot Y \mod n$
+- $= [m^d \mod n] \cdot [(Y^{-1})^{ed} \mod n] \cdot Y \mod n$
+- $= m^d \mod n$
+
+$(Y^{-1})^e \mod n$ can be computed in advance
+
+## Power Analysis Attacks
+An attack that enables to retreive a secret by observing power consumptions of a device
+
+### Simple Power Analysis
+Measure power consumption of instruction sequences that depend on the key
+![](https://i.imgur.com/STK6fwM.png =500x)
+If squaring is followed by other squaring that bit is 0, if squaring is followed by multiplication that bit is 1.
+
+### Differential Power Analysis
+Power consumption depends not only on the type of executed instruction but also on values of operands:
+- Storing data to register or memory (storing 0 *vs* storing 1)
+- Shifts and rotations
+- Logical and arithmetic operations
+
+E.g. attack on DES: Half of key is in C register and rotated each round in deterministic way.
+
+### Protection
+1. Desynchronization
+2. Noise generator
+3. Filter at the power input + physical shielding
+4. Software balancing
+5. Hardware balancing
+
+## Cache timing attacks
+Table lookups/memory addresses are derived from key+plaintext. Depending on where the data is (cache, memory) access time will vary leaking information.
+### Block ciphers
+- Data in blocks of $N$ bits
+- Each block seen as symbol (Alphabet size: $2^N$)
+- Block of plaintext mapped to block of ciphertext ($2^N!$ mappings)
+- Secret key indicates which mapping to use
+
+Problem: Key to big for ideal block cipher ($\log_2(2^N!) bits$, $10^{11}GB$ when $N=64$})
+
+Solution: Key of $K$ bits to specify random subset of $2^K$ mappings
+
+#### Shannon's Confusion and Diffusion Principle
+
+Diffusion
+: Ciphertext bits should depend on plaintext bits in complex way (if $M_i$ is changed $C_i$ should change with $p=0.5$)
+
+Confusion
+: Each bit of $C$ should depend on the whole key (change of one bit in the key changes entire ciphertext)
+
+#### Attack on AES
+1. Offline phase:
+    For each byte of the key one index value will have slowest lookup time, find value for each byte (e.g. k[13] is slowest when index value is 8)
+2. Attack phase:
+    - Measure time needed by server to encrypt each sent message
+    - Observe that average AES time is maximum when e.g. $n[13] = 147 \Rightarrow k[13] \oplus 147$ takes longest
+    - Compare with value from offline phase (k[13] \oplus 147 = 8 \Rightarrow k[13] = 155)
+
+Problem: Difficult to write *constant*, *high-speed* AES Software
+Solution: Special AES instruction on chip decouples AES from cache
+
+
+<p style="page-break-after:always;"></p>
+
 # Readings
 ## [Remote Timing Attacks are Practical](https://crypto.stanford.edu/~dabo/papers/ssl-timing.pdf)
 RSA decryption implementations often have branches depending on the input. Those can be used in a side-channel timing attack, even across a network or VMs.
