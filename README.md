@@ -1,1 +1,1 @@
-All summaries have been written in [HackMD](https://hackmd.io), PDFs are best generated in HackMD.io
+All markdown summaries have been written in [HackMD](https://hackmd.io).
