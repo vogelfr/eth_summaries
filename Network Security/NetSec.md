@@ -119,3 +119,93 @@ Two valid blocks mined roughly at the same time will create a temporary fork
 
 Bitcoin unstable if single miner controls more than half of all computing power
 
+
+# Domain Name System (DNS) Security
+Domain Name System (DNS)
+: Mapping of name to resource of several type
+
+### DNS Namespace Hierarchy
+<img src="https://i.imgur.com/90S1rFQ.png" style="float:right; width:300px"></img>
+- Hierarchical namespace to scale - tree structure down from *root* level `.`
+- *Top-level domains (TLD)* below root (`.ch`, `.com`, `.edu`)
+- Domains are namespaces
+    - Everything below `.com` is the `com` domain
+- Fully-qualified-domain name (FQDN)
+    - E.g. `mail.ethz.ch` or `svn.netsec.inf.ethz.ch`
+
+### Protocol & Elements
+- No encryption, authentication nor integrity built into original protocol
+    - DNSSec extensions provide that
+- Name server (Servers that map names to objects)
+    - Authoritative: server is authoritative for a specific zone
+    - Caching/Resolver: server resolves domains recursively, caches results
+- Resolver (Client side of DNS resolution)
+    - Stub resolver: library that forwards request to name server
+    - Recursive resolver: processes DNS resolution iteratively to provide full answer
+
+### Record types
+| Record Type | Description               | Usage                                                         |
+|-------------|---------------------------|---------------------------------------------------------------|
+| A           | Address record            | Maps FQDN into an IP address                                  |
+| PTR         | Pointer record            | Maps an IP address into FQDN                                  |
+| NS          | Name server record        | Denotes a name server for a zone                              |
+| SOA         | Start of Authority record | Specifies many attributes concerning the zone                 |
+| CNAME       | Canonical name record     | Defines alias name and maps it to absolute (canonical) name   |
+| MX          | Mail Exchanger record     | Used to redirect email for given domain or host to other host |
+| TXT         | Text record               | Free form text of any type                                    |
+### DNS Resolution process and possible attack vectors
+![](https://i.imgur.com/9tSM8Qj.png)
+
+
+- Cached results expire after a period of time (Time To Live (TTL))
+
+#### Root Zone
+- DNS Root Zone is served by 13 server clusters which are authoritative for queries for the top-level domains
+- **every name resolution in the Internet either starts with a query to a root server, or, uses information that was once obtained from a root server**
+- `a.root-servers.net` to `m.root-servers.net`
+- All other name servers use hard coded config file to lookup IP address for root servers
+
+#### Top-Level Name Server
+- Manages reservation of second-level domains (SLD) below given TLD
+- Must be accredited by TLD registry and/or country code TLD registry (ccTLD)
+
+#### Autoritative Domain Server
+- Managed by private entities
+- Has all records for a zone configured and can provide final/authoritative information
+
+|                                   | Authoritative Name Server                                                     | Cache/Recursive Resolver                                                    |
+|-----------------------------------|-------------------------------------------------------------------------------|-----------------------------------------------------------------------------|
+| Availability                      | Should be able to respond to lookup queries from any computer on the Internet | Should only respond to lookup queries that originate from a “local” network |
+| Types of queries it should answer | Non-recursive queries                                                         | Recursive queries                                                           |
+| Records it should resolve         | Should only respond with data it is authoritative about                       | Should attempt to resolve any legitimate request                            |
+
+## DNS Abuses & Attacks
+![](https://i.imgur.com/cjUl5Kh.png)
+
+### DNS Spoofing
+![](https://i.imgur.com/KezKbyv.png)
+
+### Distributed Reflection / Amplification DDoS
+![](https://i.imgur.com/atm0Xfa.png)
+
+### DNS Cache poisoning
+![](https://i.imgur.com/3Els4SY.png)
+
+### DNS/Domain Hijacking - LAN
+![](https://i.imgur.com/tWfPGf4.png)
+
+## DNSSEC
+| Record Type | Description | Usage |
+|-------------|---------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| RRSIG | Resource record signature | DNSSEC signature for record set. Resolvers verify signature with public key, stored in DNSKEY-record |
+| DNSKEY | Public key record | Contains public key that a resolver uses to verify DNSSEC signatures in RRSIG-records |
+| DS | Delegation signer record | Holds name of delegated zone. DS record is placed in parent zone along with delegating NS-records. References a DNSKEY-record in sub-delegated zone |
+| NSEC | Next secure record | Contains link to next record name in zone and lists record types that exist for record's name. DNS Resolvers use NSEC records to verify non-existence of record name and type as part of DNSSEC validation. |
+
+- Certificate and trust chain based approach for authenticating DNS responses
+- SIG verification is done by caching forwarders
+- Political and technical worries of how to manager the master keys
+
+# Public Key Infrastructure (PKI)
+Trust anchor / Trust root
+: Self-signed certificates of public keys that are allowed to sign other certificates
