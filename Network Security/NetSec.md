@@ -209,3 +209,101 @@ Domain Name System (DNS)
 # Public Key Infrastructure (PKI)
 Trust anchor / Trust root
 : Self-signed certificates of public keys that are allowed to sign other certificates
+
+## X.509
+- Two sections: Data and Signature
+- A CA assigns a unique name to each user and issues a signed certificate
+- Often name is domain or email address
+- Each CA issues certificate for those beneath it
+
+## Trust Roots for Entity Validation
+Trust roots do not scale to the world
+- Monopoly model: single root of trust
+    - DNSSEC, BGPSEC / RPKI
+    - World can not agree on who controls root of trust
+- Oligarchy model: numerous roots of trust
+    - SSL/TLS PKI: over 1000 trusted root CA certificates
+    - Weakest-link security: single compromised entity enables MITM
+    - Not trusting some trust roots results in unverifiable entites
+
+## SCION Approach: Domain-based Isolation
+Per-domain Trust Root Configuration
+: Each domain has policy of trusted CAs
+
+## Approaches to Imporve TLS
+### HTTP Strict Transport Security (HSTS)
+- Allows servers to declare clients should only use HTTPS
+- Prevents some *downgrade*, *SSL stripping* and *session hijacking* attacks
+
+### HTTP Public-Key Pinning (HPKP)
+Servers send set of public keys to clients. These keys should be the only ones used for connection to this domain.
+
+### Certificate Revocation
+- Certification revocation is a mechanism to invalidate certificates
+- CAs publish Certificate Revocation Lists (CRL)
+
+#### Online Certificate Status Protocl (OCSP)
+Used to verify certificate status, ensure certificate is valid
+But:
+- OCSP servers can be slow
+- "Optimistic" treatment of OCSP failure information
+    - No browser treats OCSP error as fatal
+- After breach browser vendors relied on browser patches to remove compromised certificates instead of revocation
+- OCSP stapling would help with privacy and latency
+
+### DNS-Base Authentication of Named Entries (DANE)
+Goal: Authenticate TLS server without CA
+Idea: Use DNSSEC to bound certificates to name
+Use cases:
+1. CA constraints: clients should only accept certs by these CAs
+2. Cert constraints: clients should onl accept this cert
+3. Trust anchor assertion: clients should use domain-provided trust anchor to validate certificates for that domain
+
+### Certificate Transparency (CT)
+- CT will make all public end-entity TLS certificates public
+- CT will hold CAs publicly accountable for all certificates they issue
+
+#### CT Log
+- Append-only list of certificates
+- Periodically append all new certificates to append-only log and sign list
+- Publishes all updates of signed list of certificates to the world
+- The log does not testify the "goodness" of certificates
+- The log is untrusted: cryptographically verifiable that everyone sees the same log
+
+Currently does not support revocation
+
+## Attack-Resilient PKI (ARPKI)
+- Reduce trust in any *single* component (CA, log server, etc.)
+- Address adversarial events
+    - CA private key compromise
+    - Domain private key compromise
+    - Make attacks visible
+- Support legitimate events that are indistinguishable from malicious events
+    - Switch to other CA
+    - Legitimate re-creation of key pair after private-key loss
+
+### Properties
+| Property | Description |
+|-----------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Checks and balances |- Reduce trust in any single party (CA)<br>- Distribute trust over multiple parties<br>- Parties monitor each other<br>- Make "trusted" entity misbehaviour visible |
+| Brief compromise period | Domain can only be impersonated for short amount of time |
+| Brief unavailability period | Domain's cert readily available for public usage after benign or adversarial events |
+| Trust agility |- Users and domains pick entities they trust<br>- Users can modify trust decisions at any moment *without delay* |
+| Privacy | SSL/TLS connection information should *only* be revealed to client & server |
+| Efficiency | No increase in SSL/TLS connection setup |
+| Usability | No user involvement required, secure by default |
+
+### Entities
+| Entity                     | Description                                                                                                    |
+|----------------------------|----------------------------------------------------------------------------------------------------------------|
+| Client                     | Establishes TLS connections with domain                                                                        |
+| Integrity Log Server (ILS) | - Logs domains’ certificates<br>- Makes logs publicly available<br>- Maintains Integrity Tree                  |
+| CA                         | - Certifies domains’ public keys<br>- Download ILS data and check consistency<br>- Check behavior of other CAs |
+
+### Communication Flow
+![](https://i.imgur.com/LwXU3FO.png)
+- $n$ parties needed for valid certificate
+- At least $n$ compromised entites to mount attack
+- Security parameter $n$ can be increased
+    - Entire infrastructure needs to agree on parameter $n$
+    - More overhead and latency
