@@ -254,10 +254,165 @@ Solution: **Server Invariance with Strong Client Authentication (SISCA)**
 ![](https://i.imgur.com/Ry7ns1Q.png)
 
 
+# Operating System Security
+Secure OS Definition
+~ **A reference monitor:** System to monitor and enforce a security policy
+~ **Complete mediation:** All security-sensitive operations must be directed to the reference monitor
+~ **Tamperproof:** Enforcement mechanism cannot be modified by untrusted processes
+~ **Verifiable:** Small enough to audit, prove it satisfies goals
 
 
+## Compartmentalization
+Qubes OS
+- Securely isolated compartments called qubes
+- One compromised qube won't affect the others
+    - Compromising an application as easy as before but has limited impact
+- Xen hypervisor
+- One admin domain, several user domains
 
+Different colors:
+- different VMs
+- Different Trust Levels
+- Different File Systems, etc.
+- Colors can not be forged by applications
 
+Disposable Qubes
+- Very lightweight VMs, can be created and booted quickly
+- E.g. view sensitive but potentially malicious document
+    - Sensitive information not leaked
+    - Malicious document isolated from anything else
+
+| Pro | Con |
+| -------- | -------- |
+| Easily start VMs, Copy-Paste between VMs     | May be difficult for (non-expert) users     |
+| Protected clipboard, Secure File Transfer | Requires complex configuratio, disciplined use |
+
+Gains:
+- Reduces attack surface per use case $\rightarrow$ smaller Trusted Computing Base (TCB)
+- Limits impact of compromise
+- Less inter-compartment interactions $\rightarrow$ easier control
+
+**But** not designed to be tamperproof and verifiable
+
+## Microkernels
+Kernel as small as possible:
+- Only keep necessary parts in kernel
+- Minimal Trusted Computing Base (TCB)
+- Reduce attack surface
+
+Essentials:
+1. Address space managment
+2. Scheduling
+3. Inter-Process Communication (IPC)
+
+Per application TCB
+- Microkernel
+- Needed servers
+    - Daemon program
+    - Kernel grants privilege to interact with parts of physical hardware
+    - Device drivers interact directly with hardware
+- **IPC performance** very important
+
+### sel4
+- Efficent and high assurance (verifiable)
+- Comprehensive *formal verification* down to machine code
+- Enforces critical security properties as information flow control, integrity and confidentiality
+Verification
+- Automated verification of correctness of compiler-generated code
+- High-level abstract specification allows verification of high-level properties
+- Full functional correctness (abstract specification describes all possible functional behaviours of system)
+- Refinement proof shows behaviour of binary implementation is fully captured by abstract specification
+
+### Pro, cons
+| Pro | Con |
+| -------- | -------- |
+| Closer to the ideal secure OS definition | Limited functionality, performance |
+| Complete mediation, tamperproof, verifiable | Very expensive to build and update |
+
+## SELinux
+### Linux Security Module (LSM) Framework
+<img src="https://i.imgur.com/YWkrWXz.png" style="float:right; width:300px"></img>
+- Hook security-sensitive accesses
+- Over 150 hooks defined
+- Implementation by various security modules
+
+### SELinux
+<img src="https://i.imgur.com/x1Xh0Y0.png" style="float:right; width:300px"></img>
+Implements LSM hooks
+- Mandatory Access Control (MAC) for Linux
+    - Opposed to Linux' standard discretionary access control (DAC)
+- Two main components
+    - Authorization module: converts input from LSM hooks into authorization queries
+    - Policy store: processes authorization queries by looking up policy
+- Files labeled on disk
+- Concepts
+    - Default deny: all that is not explicitely allowed is denied
+    - Confinement: adding user to `user_u` means user cannot use `setuid` applications or execute files inside home directory
+    - Separation: cannot compromise one process and use it as vector for another
+- Labels: `user:role:type:(level)`
+- Fine-grained access control
+- Not tamperproof or verifiable
+
+## Android
+- Isolate applications instead of isolating users
+- Each application gets separate Linux UID
+    - Apps cannot read each other's files/memory
+    - Apps cannot exhaust all ressources by themselves
+- Permissions requested by application in manifest
+    - Permissions of type "Dangerous" need user approval
+- Applications have to be signed by developer
+    - Updates have to be signed with same key
+    - Applications signed by same key can request same UID
+
+## Overview
+- Trend changing from isolating users towards isolating apps
+- Least privilege, compartimentalization, isolation, protection of sensitive information
+- OS Security is hard
+
+# Designing Secure Systems based onTrustworthy Computing and Attestation
+Three-step approach:
+1. Establish isolated execution environment
+    - Ensures partition from untrusted components
+    - Hardware ensures partition
+2. Externally validate correctness of execution environment
+    - Use external root of trust to establish local root of trust
+3. Autonomus launch and operation of execution environment
+    - After root of trust is set up, use without external validation
+    - Sealed storage enables secure local execution after local root of trust is set up
+
+## Trusted Platform Module (TPM)
+Goals:
+- Platform identity
+- Remote attestation
+- Sealed storage
+- Secure counter
+
+Misconceptions:
+- TPM is passive, *not* general-purpose processor
+- TPM is not tamperproof
+- TPM is not part of main processor
+
+### Basic functions
+- Platform Configuration Registers (PCR): store integrity measurement chain
+    - PCR~new~ = SHA-1(PCR~old~ || SHA-1(data))
+- On-chip storage for Storage Root Key K^-1^~SRK~
+- Manufacture certificate
+- Remote attestation (PCRs + AIK)
+    - Attestation Identity Keys (AIKs) for signing PCRs
+- Sealed storage (PCR + SRK)
+- Random number generation
+
+### Attested Boot (TCG 1.1)
+- Measurement of all executed software and configuration files define platform configuration
+
+**TO BE FINISHED**
+
+# Intel Software Guard eXtensions (SGX) / ARM Trustzone
+## SGX
+- Security critical code isolated in enclave
+- Only CPU is trusted
+- Enclaves can not harm system
+- Designed for multi-core systems
 
 
 <p style="page-break-after:always;"></p>
