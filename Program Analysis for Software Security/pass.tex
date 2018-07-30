@@ -18,7 +18,7 @@
 \renewcommand{\arraystretch}{1.5}
 \linespread{1}
 
-
+\setlength{\parindent}{0em}
 
 \title{Program Analysis for System Security and Reliability\\Summary}
 \author{Frédéric Vogel}
@@ -32,7 +32,17 @@
 \pagebreak
 
 \section{Programmable Networks}
+Network Configuration is hard and misconfigurations are common, local configuration changes have global effects on how traffic is routed.
+\subsection{Mathematical Background}
+\subsubsection{Partially ordered sets (posets)}
+A \textbf{partial order} is a binary relation $\sqsubseteq \subseteq L\times L$ with these properties:
+\begin{description}
+	\item[Reflexive] $\forall p \in L\ldotp p\sqsubseteq p$
+	\item[Transitive] $\forall p, q, r \in L\ldotp (p\sqsubseteq q \wedge q\sqsubseteq r) \Rightarrow p \sqsubseteq r$
+	\item[Antisymmetric] $\forall p, q \in L\ldotp (p\sqsubseteq q\wedge q\sqsubseteq p) \Rightarrow p=q$
+\end{description}
 
+A \textbf{poset} ($L, \sqsubseteq$) is a set $L$ equipped with a partial ordering $\sqsubseteq$.
 
 
 
