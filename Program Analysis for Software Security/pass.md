@@ -101,7 +101,7 @@ $T_P$ not monotone for Datalog programs with negation
 - Negated predicates defined in lower stratum
 - Positive predicates defined in current or lower stratum
 
-$\mapsto$ For each stratum compute the lfp that contains the lfp of the previous stratum
+$\to$ For each stratum compute the lfp that contains the lfp of the previous stratum
 
 ## Automated Analysis of network configurations
 Router configurations
@@ -118,7 +118,57 @@ Forwarding plane
 2. Compute forwarding plane (by computing fixed-point)
 3. Check for violations (by querying the fixed-point)
 
-$\mapsto$ Is existing configuration correct?
+$\to$ Is existing configuration correct?
+
+## Automatic Network Configuration Synthesis
+### Symbolic Execution
+- Runs program with symbolic values $\to$ big constraint formula
+- SMT solver used to find satisfying assignments to constraint formula
+- Symbolic execution keeps *symbolic store* and *path constraint* $\to$ conjunction gives *symbolic state*
+- Challenges:
+    - Loops
+    - Non-linear constraints
+    - Hard-to-solve constraints (e.g. `x=hash(y)`)
+
+## SyNET
+- Variables in head of of rule are quantified universally, those in body are quantified existencially
+1. Encode Datalog program $P$ into SMT constraints
+2. Encode Datalog query $q$ as assertions that must hold on the fixed-point
+3. Get a model $M$ that satisfies the conjunction of the above constraints
+4. Derive input $I$ from $M$ by checking which atoms are `true` in $M$
+
+### Bounded unrolling of Datalog
+Problem: in Datalog `p <- q` is only derived iff `q` is `true`
+In logic $p\Leftarrow q$ is also satisfied if $q$ is $false$ and $p$ is $true$.
+
+#### Bounded unrolling:
+```
+path(X,Y) <- link(X,Y)
+path(X,Y) <- link(X,Z), path(Z,Y)
+```
+leads to the following constraints:
+$\forall X, Y\ldotp path_1(X,Y)\Leftrightarrow link(X,Y)$
+$\forall X, Y\ldotp path_2(X,Y)\Leftrightarrow (link(X,Y)\vee (\exists Z\ldotp link(X,Z) \wedge path_1(Z,Y)))$
+
+Unrolling works only for *positive* queries.
+
+#### Handling negative queries
+No unrolling for negative queries
+
+### Stratified Datalog
+Back step
+: Backtrack to step Synth $P_i$ if step Synth $P_{i-1}$ returns `unsat`
+
+Synth $P_n$
+: Compute input $I_n$ for stratum $P_n$ such that $[P_n]_{I_n}$ satisfies $q$
+
+Synth $P_{n-1}, \ldots, P_1$
+: Compute input $I_i$ for stratum $P_i$ such that $[P_i]_{I_i}$ produces the input $I_{i+1}$ produced by previous step
+
+**Key Challenge: Scaling synthesis for OSPF**
+
+## Efficient OSPF Synthesis
+
 
 # Blockchain Security
 
