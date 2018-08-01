@@ -168,7 +168,51 @@ Synth $P_{n-1}, \ldots, P_1$
 **Key Challenge: Scaling synthesis for OSPF**
 
 ## Efficient OSPF Synthesis
+$P$
+: Set of all simple paths from $src$ to $dst$
 
+$C$
+: Set of all cost variables
+
+$\phi(P, C)$
+: Encoded requirements
+
+$A$
+: Cost assignment
+
+### Direct OSPF Synthesis
+Find cost assignment $A$ such that $\phi(P, A)$ holds
+
+Formula for solver: $\exists C\ldotp\phi(P,C)$
+
+$\to$ hard to solve:
+    - Constraint quantifies over all simple paths in $P$ $\to$ exponentially many
+### Counter Example Guided Inductive Synthesis (CEGIS)
+Insight: A small set $E$ of path can be sufficient to constrain the solution:
+$$
+\exists C \ldotp \phi(E, C), \qquad\textrm{where}\quad E=\{P_1, P_2, \ldots, P_k\} \subseteq P
+$$
+
+![](https://i.imgur.com/A5pcfbc.png)
+
+## Probabilistic Network analysis
+- State
+- Distribution
+- Analysis
+    - Input:
+        - Input distribution $\varphi_i$ over states of program
+        - Statement (or program) $s$
+    - Output: 
+        - Ouput distribution $\varphi_o$ over states of program
+- Normalisation:
+    - $P_{new}(X) = \frac{P(X)}{\sum P(X)}$
+### Bayonet
+- Networks exhibit probabilistic behaviours
+- Can model in  a *probabilistic programming language*
+- Use existing solvers for inference. Benefits:
+    - Do not reinvent the wheel
+    - Can use to test a specialised solution
+    - Provide benchmarks to general tools
 
 # Blockchain Security
 
