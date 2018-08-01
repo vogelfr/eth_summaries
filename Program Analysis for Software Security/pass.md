@@ -215,6 +215,69 @@ $$
     - Provide benchmarks to general tools
 
 # Blockchain Security
+## Hash functions
+- Function from arbitrary length data to fixed-sized output
+- Deterministic
+- Uniform
+- Efficiently computable
+- Collisions exist
+
+### Cryptographic hash functions
+#### Properties
+Given hash function $h: X \to Y$
+
+Pre-image resistance
+: Given $y\in Y$, it is infeasible to find $x\in X$ such that $h(x) = y$
+
+Second pre-image resistance
+: Given $x\in X$, it is infeasible to find $x' \in X$ such that $x\neq x'$ and $h(x) = h(x')$
+
+Collision resistance
+: It is infeasible to find a pair $(x_1, x_2)$ such that $x_1\neq x_2$ and $h(x_1) = h(x_2)$
+
+#### Applications
+Data equality
+: If we know that $h(x) = h(y)$ it is safe to assume that $x=y$
+
+Data integrity
+: To verify integrity of data $d$ we remember $h_d = h(d)$. When obtaining $d'$ from *untrusted* source we can verify it by checking $h_d\stackrel{?}{=} h(d')$
+
+#### Cryptographic puzzles
+Puzzle friendly
+: For any output $y$, if $r$ is chosen from probability distribution with high min-entropy, it is infeasible to find $x$ such that $h(r || x) = y$
+
+Search puzzle
+: Given puzzle ID $id$, chosen from a probability distribution with high min-entropy, and an output range $T \subseteq Y$ find a solution $x$ such that $h(id || x) \in T$. Because of puzzle-friendliness no strategy is better than trying random values of $x$
+
+### Merkle trees
+<img src="https://i.imgur.com/Y5aPXSL.png" style="float:right; height:150px;"></img>
+- Hash root $h$ obtained from *trusted* source
+- Integrity of data elements verified by reconstructing hash root and comparing
+
+### Digital signatures
+Allow only one user to sign but anyone to verify the signature
+
+#### API
+- $(sk, pk) = generateKeys(keySize)$
+    - $sk$ is the secret key (kept private)
+    - $pk$ is the public key (distributed)
+- $sig = sign(sk, msg)$
+- $verify(pk, msg, sig)$
+
+### Digital identity
+- User generates key pair $(sk, pk)$
+- $h(pk)$ is public name of user
+- $sk$ allows user to endorse statements $stmt$ using digital signature: $sig = sign(sk, stmt)$
+- anyone can verify statements endores by user using $verify(pk,stmt,sig)$
+
+### Simple coin creation and transfer
+<img src="https://i.imgur.com/E4V3dTj.png" style="float:right; height:150px;"></img>
+
+- Alice creates coin (identified by $coinID$) and endorses it (by signing $coinID$)
+- Alice can transfer the coin to Bob (identified by $h(pk_{Bob})$) by signing a transaction
+
+## Bitcoin
+
 
 # Attacks and Defenses of Deep Learning
 
