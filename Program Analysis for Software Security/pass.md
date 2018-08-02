@@ -277,6 +277,129 @@ Allow only one user to sign but anyone to verify the signature
 - Alice can transfer the coin to Bob (identified by $h(pk_{Bob})$) by signing a transaction
 
 ## Bitcoin
+### Distributed ledger/consensus
+- All nodes must see the same state of the ledger
+- The protocol terminates and all correct nodes decide on the same value
+- Value must have been proposed by some correct node
+
+To make a transaction:
+- Users *broadcast transactions* to the network nodes
+- All nodes have a sequence of blocks of *agreed transactions* they have reached consensus on
+- Each node has set of *outstanding transactions*
+
+### Blockchain
+Chain of blocks of transactions
+
+![](https://i.imgur.com/k7YwqEt.png)
+
+### Concensus algorithm
+1. New transactions are broadcast to all nodes
+2. Each node collects new transactions in a block
+3. In each round a *random block* gets to broadcast its block
+4. Other nodes accept the block only if all transactions in it are valid (unspent, valid signatures)
+5. Nodes express their acceptance of the block by including its hash in the next block they create
+
+#### Proof of work
+To select a random node that broadcast its block: select nodes in proportion to a resource that no one can monopolize
+
+##### Given
+- Previous block with hash $h_{prev}$
+- Merkle tree consisting of all new transactions with hash $h_{tx}$
+
+##### Find
+- Nonce $nonce$ such that
+$$
+hash(h_{prev} | h_{tx} | nonce) \leq \textrm{difficulty}
+$$
+
+##### Properties
+- Difficult to compute
+- Parametrisable cost
+- Easy to verify
+- Key security assumption: Attacks infeasible if majority of miners weighted by hash power follow the protocol
+
+Honest nodes extend the longest valid branch
+
+#### Incentives to extend longest chain
+##### Block reward
+The creator of a block can:
+- Include special coin-creation transactions in the block (fixed value)
+- Choose recipient address of this transaction
+- **Only** paid if block ends up on the long-term concensus branch
+
+##### Transaction fees
+- Creator of transaction may choose to make output value less than input value
+- Difference is transaction fee that goes to block creator
+
+## Smart contracts
+- Computerised transaction protocol that executes terms of contract
+- Used to satisfy common contractual conditions
+- Used to minimise exceptions (malicious or accidental)
+- Used to minimise need for trusted intermediaries
+
+### Ethereum
+Decentralised platform designed to run smart contracts
+- Similar to a world computer that executes code and maintains state of all smart contracts
+- Latest block stores latest local state of all smartest contracts
+- Transactions result in executing code (calling a function) in target smart contracts
+- Transactions change state in one or more smart contracts
+- Turing complete
+
+![](https://i.imgur.com/UhBHDBc.png)
+
+#### Ethereum accounts
+Externally owned accounts
+- Owned by some external entity
+- Contains:
+    - Address
+    - Ether balance
+
+Contract accounts
+- "Owned" by contract
+- Contains:
+    - Address
+    - Ether balance
+    - Associated contract code
+    - Persistent storage
+
+#### Gas
+- Each transaction requires *gas* to fuel contract execution
+- Each EVM opcode requires a fixed amount of gas to execute
+- Every transactions specifies the maximum ether the sender is willing to spend on the transaction
+- Contract successfully executed?
+    - Yes: Unspent ether is refunded to sender
+    - No: Execution reverts without refunding
+
+#### Authorisation
+Any user can call arbitrary functions in contracts. The contract must explicitly restrict access to sensitive information.
+
+#### DAO Bug
+```
+uint balance = 10;
+
+function withdraw() {
+    if (balance > 0):
+        msg.sender.call.value(balance)();
+    balance = 0;
+}
+```
+Calling `withdraw()` multiple times before balance is set to zero $\to$ profit.
+Attacker stole $ 150M of ether from The DAO
+
+#### Partiy bug #1
+Fallback function in wallet contract delegating any non-defined function to wallet library contract.
+
+Attacker re-initialized wallet owner
+
+White-hat hackers saved 377k ETH by hacking vulnerable wallets themselves and giving back funds to owners
+
+#### Parity bug #2
+User accidentally(?) deleted wallet library contract $\to$ no more withdraws are possible on wallets using the library $\to$ funds freezed in place, no way of recovering.
+
+$ 170M frozen this way
+
+
+
 
 
 # Attacks and Defenses of Deep Learning
