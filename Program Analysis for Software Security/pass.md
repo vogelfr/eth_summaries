@@ -398,8 +398,74 @@ User accidentally(?) deleted wallet library contract $\to$ no more withdraws are
 
 $ 170M frozen this way
 
+## Security Properties
+Solidity, Vyper
+: High-level languages
 
+EVM
+: Low-level code, stack-based, no types, no functions
 
+### Semantics of smart contracts
+#### System state
+Storage $S$
+: Persistent initial storage is defined by constructor
+
+Memory $M$
+: Non-persistent (re-initialised before executing transaction)
+
+Stack $Q$
+: Size limited to 1024 elements, each element 256 bit
+
+Block information $B$
+: Number, timestamp, etc.
+Fixed for a given transaction
+
+State $\sigma$
+: $\sigma = (S, M, Q, B)$
+Storage, memory and stack may change as contract executes for given transaction
+
+Transaction $T = (caller, data)$
+: Transaction sender ($caller$)
+Transaction data ($data$)
+
+Trace
+: $(\sigma_0, op_0) \to_T (\sigma_1, op_1) \to_T \cdots \to_T (\sigma_{n-1}, op_{n-1}) \to_T (\sigma_n)$
+$op_{n-1}$: STOP
+$\sigma_n$: final state
+Each $op_i$ is next EVM op-code to be executed
+Set of all traces for given contract defines the contract's semantics
+
+Unchanged storage after call
+: A contract does not change storage after calls iff for any two traces that are identical up to $call$ instruction the final storage $S_n$ and $S_n'$ are identical.
+
+Unrestricted write
+: A write to offset $o$ is unrestricted iff for any user address $a$ there is a transaction $T = (a, \_)$ and a trace $(\sigma_0, op_0) \to_{(a, \_)} \cdots \to_{(a, \_)} (\sigma_i, op_i) \to_{(a, \_)}\cdots$ such that $op_i = SStore(o,\_)$
+
+Locked ether
+: A contract locks ether iff it *can receive* ether and *can not transfer* ether
+
+Further security properties
+: - Unexpexted ether flows
+- Insecure coding (e.g. unpriviledged write)
+- Use of unsafe input
+- Reentrant method calls (e.g. DAO bug)
+- Manipulating ether flow via transaction reordering
+
+## Securify
+![](https://i.imgur.com/ASsPJoV.png)
+
+<img source="https://i.imgur.com/OwLDpfe.png" style="float:right; height:150px;"></img>
+
+- Security properties get encoded into Compliance and Violation patterns
+- Static analysis using fixed-point computation
+    - Pointer analysis
+    - Data-flow analysis
+    - Taint analysis
+    - others
+- Analysis expressed declaratively in Datalog
+    - Declarative (concise specs of analyis)
+    - Modular
+    - Can leverage existing scalable Datalog solvers
 
 
 # Attacks and Defenses of Deep Learning
