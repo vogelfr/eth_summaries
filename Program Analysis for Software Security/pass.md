@@ -467,7 +467,87 @@ Further security properties
     - Modular
     - Can leverage existing scalable Datalog solvers
 
-
 # Attacks and Defenses of Deep Learning
+Deep model
+: Mathematical model trained from input-output examples
+Mainly for tasks that are easy to perform but hard to formally define
+
+## Background
+### Classification through Machine Learning
+Take a *data-driven* approach and learn a *model* (function) $f$ from data
+$f:I\to C$ *approximates* the optimal function $f^*:I\to C$
+A model is an *architecture* with real-valued *weights* and *biases*
+The architecture defines the space of expressible models
+
+
+### Perceptron
+A classifier parametrized by *weights* $w_0, \ldots, w_{n-1}$ and *bias* $b$
+Input $\overline{x} = (x_0, \ldots, x_{n-1})$
+$$
+f(x) =
+\begin{cases}
+  1 & \sum w_i x_i + b \geq 0 \\
+  0 & \text{otherwise}
+\end{cases}
+$$
+
+Linearly seperates the space
+
+
+
+### Loss functions
+Goal: model and optimal classifier are equal: $\forall i\ldotp f^*(i) = f(i)$
+
+Induces a loss function which measures how good a classifier is: $\sum_{i\in I} [f^*(i) \neq f(i)]$
+> $[\cdot]$ Iverson brackets $[true] = 1, [false] = 0$
+
+Goal: find weights and biases of the model $f$ which minimises loss
+
+#### Empirical loss
+Problem: not all labels of input data $I$ are given
+Approach: estimate loss function on some of labeled inputs $D$
+Given labeled data $D$ compute *empirical loss* $\sum_{i\in D}[f^*(i)\neq f(i)]$
+
+To avoid overfitting to $D$:
+- Split $D$ into training set $D_{Tr}$ and test set $D_{Te}$
+- Learn model by minimising loss on $D_{Tr}$, estimate loss on $D_{Te}$
+
+Optimal solution of $\sum_{i\in D}[f^*(i)\neq f(i)]$ is a *global minimum* $\to$ define *differentiable* loss function and find point that nullifies its derivative.
+
+
+### Training with gradient descent
+#### Mean Squared Error
+
+$MSE = \sum_{i \in D_{Tr}} (f^*(i)-f(i))^2$
+
+If model consists of single weight $f(i) = w\cdot i$, then $MSE = \sum_{i\in D_{Tr}} (f^*(i)- w\cdot i )^2$
+
+The minimum nullfies the derivative $\sum_{i\in D_{Tr}} 2(f^*(i)-w\cdot i)\cdot(-i) = 0$ 
+
+Can compute best model (i.e. $w$) *analytically
+
+#### Gradients
+For $f(w_0, \ldots, w_{n-1}, b)$ with >1 parameter, derivative of $MSE = \sum_{i \in D_{Tr}} (f^*(i)-f(i))^2$ is generalised to *gradient*
+
+A gradient is a vector defined by partial derivative of the variables
+$$
+\nabla MSE = \left ( \frac{\partial MSE}{\partial w_0}, \ldots, \frac{\partial MSE}{\partial w_{n-1}}, \frac{\partial MSE}{\partial b} \right )
+$$
+
+Minimum nullifies $\nabla MSE$ in all dimensions $\to$ hard to compute analytically
+
+#### Gradient descent
+1. Initialise randomly with certain values for weights/bias $a_0$
+2. Compute $\nabla MSE$ at $a_i$
+3. Next point is the one maximising decrease in $MSE$
+$a_{i+1} = a_i - \gamma \nabla MSE(a_i)$, $\gamma$ is learning rate
+4. If loss is small enough, complete, otherwise, repeat from 2.
+
+
+
+
+### Deep learning models
+
+### Back propagation
 
 # Probabilistic Security
