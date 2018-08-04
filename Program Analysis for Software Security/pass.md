@@ -543,11 +543,75 @@ Minimum nullifies $\nabla MSE$ in all dimensions $\to$ hard to compute analytica
 $a_{i+1} = a_i - \gamma \nabla MSE(a_i)$, $\gamma$ is learning rate
 4. If loss is small enough, complete, otherwise, repeat from 2.
 
-
-
-
 ### Deep learning models
+- Perceptrons are too simplisti models
+- Deep models combine multiple simple models
 
-### Back propagation
+Deep model
+: Directed graph of neurons organised in layers
+
+Neuron
+: Simple model followed by activation function
+
+Activation Function
+: Determines whether to propagate output of function
+$ReLU(a) = \max (0,a)$
+
+![](https://i.imgur.com/lKhscwF.png)
+
+#### Feed forward Neural network (FF NN)
+Neurons are connected to all neurons in the next layer
+
+Deep models can be tuned by gradient descent, $\to$ need to compute the partial derivatives of all weights and biases $\to$ *Hard to compute
+
+#### Back propagation
+Backprpagate the common parts of the derivatives
+
+#### Multiclass classification
+- Output layer has a neuron for each class
+- Outputs normalised to a probability distribution with softmax
+$$
+P(c_i) = \frac{\mathsf{e}^{f_i(x)}}{\sum_j \mathsf{e}^{f_j(x)}}
+$$
+
+#### Convolutional Neurol Networks (CNN)
+- Neurons are not connected to every part of the input
+- Weights are shared between neurons
+- Input size reduced by propagating part of it
+
+$\to$ reduces number of weights significantly
+
+Convolutional layer
+: Neurons are connected to local regions in the inputs and share weights
+
+Pooling layer
+: Neurons compute downsample of the input to reduce dimensionality
+
+Fully connected layer
+: Identical to FF NN, used to perform classification
+
+## Adversarial examples
+- High accuracy of a network does not imply that the network has learned the underlying concept
+- For inputs from new distribution network may behave unexpectedly
+
+### Fast Gradient Sign Method (FGSM)
+Goal: from correctly classified $x$ find $x' = x + \eta$ so that $||\eta||_\infty \leq \epsilon$
+
+Use loss function of network to optimise $\eta$ for a target $t$, set every index of $\eta$ to be in the direction of the loss' gradient
+
+1. Compute perturbation
+$\eta = \epsilon \cdot \mathrm{sign}(-\nabla_x\mathrm{loss}_t(x))$, where
+$$
+\nabla_x \mathrm{loss}_t = \left (\frac{\partial \mathrm{loss}_t}{\partial x_1}, \ldots, \frac{\partial \mathrm{loss}_t}{\partial x_n} \right)\quad \mathrm{sign}(x) = 
+\begin{cases}
+-1 & \text{if } x<0\\
+0 & \text{if } x=0\\
+1 & \text{if } x >0\\
+\end{cases}
+$$
+2. Perturbe the input
+$x' = x + \eta$
+3. Check whether $f(x') = t$
+
 
 # Probabilistic Security
