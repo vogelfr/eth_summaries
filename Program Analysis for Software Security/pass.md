@@ -245,10 +245,10 @@ Data integrity
 
 #### Cryptographic puzzles
 Puzzle friendly
-: For any output $y$, if $r$ is chosen from probability distribution with high min-entropy, it is infeasible to find $x$ such that $h(r || x) = y$
+: For any output $y$, if $r$ is chosen from probability distribution with high min-entropy, it is infeasible to find $x$ such that $h(r \Vert x) = y$
 
 Search puzzle
-: Given puzzle ID $id$, chosen from a probability distribution with high min-entropy, and an output range $T \subseteq Y$ find a solution $x$ such that $h(id || x) \in T$. Because of puzzle-friendliness no strategy is better than trying random values of $x$
+: Given puzzle ID $id$, chosen from a probability distribution with high min-entropy, and an output range $T \subseteq Y$ find a solution $x$ such that $h(id \Vert x) \in T$. Because of puzzle-friendliness no strategy is better than trying random values of $x$
 
 ### Merkle trees
 <img src="https://i.imgur.com/Y5aPXSL.png" style="float:right; height:150px;"></img>
@@ -596,7 +596,7 @@ Fully connected layer
 - For inputs from new distribution network may behave unexpectedly
 
 ### Fast Gradient Sign Method (FGSM)
-Goal: from correctly classified $x$ find $x' = x + \eta$ so that $||\eta||_\infty \leq \epsilon$
+Goal: from correctly classified $x$ find $x' = x + \eta$ so that $\Vert\eta\Vert_\infty \leq \epsilon$
 
 Use loss function of network to optimise $\eta$ for a target $t$, set every index of $\eta$ to be in the direction of the loss' gradient
 
@@ -688,6 +688,16 @@ The gradient of (a single class) $\hat{f}$ points to where it changes most
         2. Add $(i', f(i'))$ to $D$
 
 
+### Checking Robustness of Neural Networks
+Robustness
+: Given a model $f$ and an input $x$, $f$ is robust for $x$ in a neighbourhood $N_x$ if 
+$$
+\forall x'\in N_x: f(x) = f(x')
+$$
+Common $N_x$:
+$$
+N_x^\epsilon = \left\{x' \vert\Vert x' - x \Vert_p < \epsilon \right\} \quad \text{with } p = 0, 1, 2, \infty
+$$
 
 
 
