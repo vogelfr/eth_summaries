@@ -6,6 +6,7 @@ tags: ETH, Zusammenfassung
 PASS Summary
 ===
 Frédéric Vogel `vogelfr@ethz.ch`, ETH Zürich, FS18
+
 [TOC]
 
 <p style="page-break-after:always;"></p>
@@ -612,6 +613,82 @@ $$
 2. Perturbe the input
 $x' = x + \eta$
 3. Check whether $f(x') = t$
+
+### Minimal adversarial examples
+Given
+- Neural network $f: X \to C$
+- Input $x\in X$
+- Target label $t\in C$ such that $f(x) \neq t$
+
+Compute a minimal $\eta$ such that $f(x+\eta) = t$
+- By computing the salieny map of $f$, indicating where $f$ changes the most
+
+For some inputs small perturbations can significantly change the output
+
+#### Goal:
+Given the Jacobian
+$$
+J_f =
+\begin{pmatrix}
+    \frac{\partial f_1}{\partial x_1} & \ldots & \frac{\partial f_1}{\partial x_n}\\
+    \vdots & \ddots & \vdots\\
+    \frac{\partial f_m}{\partial x_1} & \ldots & \frac{\partial f_m}{\partial x_n}\\
+\end{pmatrix}
+$$
+increase $\frac{\partial f_t}{\partial x_i}$, decrease $\frac{\partial f_j}{\partial x_i}$, $\forall j\neq t$
+
+Which $x_i$ should we change?
+For a target $t$ increase those for which $\frac{\partial f_t}{\partial x_i}$ increases, while the combined classification of the other labels $f_j$ decreases
+
+#### Saliency Map
+Saliency map
+: matrix $S$ defining intensity of inputs whose increase helps the most to accomplish the goal
+$$
+S(x_1, \ldots, x_{n-1}, t)[i] = 
+\begin{cases}
+    0 & \text{if }\frac{\partial f_t}{\partial x_i} < 0\text{ or }\sum_{j\neq t}\frac{\partial f_j}{\partial x_i} > 0 \\
+    \left (\frac{\partial f_t}{\partial x_i}\cdot \left | \sum_{j\neq t}\frac{\partial f_j}{\partial x_i}\right | \right ) & \text{otherwise}\\
+\end{cases}
+$$
+
+- Given FF NN $f$, an input $x$ and a target $t$:
+    1. define $x' = x$
+    2. while $f(x') \neq t$:
+        1. compute saliency map $S(x_1', \ldots, x_n', t)$
+        2. let $i$ be index maximising $S(x_1', \ldots, x_n', t)$
+        3. $x_i' += \theta$
+
+### Black-box attacks
+- Attacker leverages prior knowledge:
+    - Dataset type
+    - Common architecture
+- Attacker trains *other* model to find advesarial examples
+
+#### Generate input
+How to generate input-output examples?
+Assume attacker can collect initial set of inputs similar to dataset, then synthesise more inputs and ask for classification to get new input-output examples
+
+1. Define architecture for $\hat{f}$, the function approximating $f$
+2. Let $D = \{(i_1, o_1), \ldots, (i_k, o_k)  \}$ be our initial training set
+3. Repeat $N$ times:
+    1. Train $\hat{f}$ on $D$
+    2. Generate new inputs and query $f$ for their output
+    3. Extend $D$ with these input-output examples
+
+#### Generating inputs based on gradient
+We generate inputs that improve our confidence in $\hat{f}$ by picking inputs whose neighbourhood show a large variance in $\hat{f}$
+The gradient of (a single class) $\hat{f}$ points to where it changes most
+
+1. Define architecture for $\hat{f}$, the function approximating $f$
+2. Let $D = \{(i_1, o_1), \ldots, (i_k, o_k)  \}$ be our initial training set
+3. Repeat $N$ times:
+    1. Train $\hat{f}$ on $D$
+    2. For every $(i, o) \in D$
+        1. Compute $i' = i + \lambda\cdot\mathrm{sign}\left(\frac{\partial f_o}{\partial i_1}, \ldots, \frac{\partial f_o}{\partial i_n}\right)$
+        2. Add $(i', f(i'))$ to $D$
+
+
+
 
 
 # Probabilistic Security
