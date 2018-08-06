@@ -46,6 +46,8 @@ A function $f: A \to B$ between two posets ($A, \sqsubseteq$) and ($B, \preceq$)
 
 For a monotone function $f: A\to A$ we have $$\forall a,b \in A: a \sqsubseteq b \Rightarrow f(a) \sqsubseteq f(b)$$
 
+<p style="page-break-after:always;"></p>
+
 ### Least fixed point
 For a poset ($L, \sqsubseteq$) and function $f: L \to L$ element $x\in L$ is a *fixed point* if $f(x) =x$
 
@@ -215,6 +217,10 @@ $$
     - Can use to test a specialised solution
     - Provide benchmarks to general tools
 
+
+
+<p style="page-break-after:always;"></p>
+
 # Blockchain Security
 ## Hash functions
 - Function from arbitrary length data to fixed-sized output
@@ -249,6 +255,8 @@ Puzzle friendly
 
 Search puzzle
 : Given puzzle ID $id$, chosen from a probability distribution with high min-entropy, and an output range $T \subseteq Y$ find a solution $x$ such that $h(id \Vert x) \in T$. Because of puzzle-friendliness no strategy is better than trying random values of $x$
+
+<p style="page-break-after:always;"></p>
 
 ### Merkle trees
 <img src="https://i.imgur.com/Y5aPXSL.png" style="float:right; height:150px;"></img>
@@ -452,6 +460,8 @@ Further security properties
 - Reentrant method calls (e.g. DAO bug)
 - Manipulating ether flow via transaction reordering
 
+<p style="page-break-after:always;"></p>
+
 ## Securify
 ![](https://i.imgur.com/ASsPJoV.png)
 
@@ -467,6 +477,9 @@ Further security properties
     - Declarative (concise specs of analyis)
     - Modular
     - Can leverage existing scalable Datalog solvers
+
+
+<p style="page-break-after:always;"></p>
 
 # Attacks and Defenses of Deep Learning
 Deep model
@@ -558,7 +571,7 @@ Activation Function
 : Determines whether to propagate output of function
 $ReLU(a) = \max (0,a)$
 
-![](https://i.imgur.com/lKhscwF.png)
+<img src="https://i.imgur.com/lKhscwF.png" style="height:250px;"/>
 
 #### Feed forward Neural network (FF NN)
 Neurons are connected to all neurons in the next layer
@@ -590,6 +603,8 @@ Pooling layer
 
 Fully connected layer
 : Identical to FF NN, used to perform classification
+
+<p style="page-break-after:always;"></p>
 
 ## Adversarial examples
 - High accuracy of a network does not imply that the network has learned the underlying concept
@@ -624,6 +639,8 @@ Compute a minimal $\eta$ such that $f(x+\eta) = t$
 - By computing the salieny map of $f$, indicating where $f$ changes the most
 
 For some inputs small perturbations can significantly change the output
+
+<p style="page-break-after:always;"></p>
 
 #### Goal:
 Given the Jacobian
@@ -710,6 +727,8 @@ $f$ is robust in $x$ iff $\forall x' \in N_x: f(x') = f(x)$
 
 In general this is *undecidable*, but under certain assumptions may be decidable.
 
+<p style="page-break-after:always;"></p>
+
 ### Decidable verification
 Focus on robustness of $x$ for $p = \infty$
 $$
@@ -747,6 +766,8 @@ Iterative algorithm
 
 **TODO** Understand...
 
+<p style="page-break-after:always;"></p>
+
 ## AI^2^: AI for AI
 ### Neural Network Analysis Problem
 Given
@@ -774,7 +795,7 @@ Abstract interpretation: scalable and precise numerical domains
 
 *Fixed point* is the *over-approximation* of the program.
 
-![](https://i.imgur.com/Zxeyq4A.png)
+<img src="https://i.imgur.com/Zxeyq4A.png" style="height:300px;"/>
 
 #### Function approximation
 $F: C \to C$ and $F^\sharp: A \to A$
@@ -843,6 +864,8 @@ $$
 \left(a_0^n + \sum_{i=1}^k a_i^n\epsilon_i\right) + \left(a_0^m + \sum_{i=1}^k a_i^m\epsilon_i\right) = \left(a_0^n + a_0^m \right)+ \sum_{i=1}^k \left(a_i^n+a_i^m\right)\epsilon_i
 $$
 
+<p style="page-break-after:always;"></p>
+
 ***Multiplication of two variables (non-linear, approximation is computed)***
 $$
 \left(a_0^n + \sum_{i=1}^k a_i^n\epsilon_i\right) \cdot \left(a_0^m + \sum_{i=1}^k a_i^m\epsilon_i\right) = \left(a_0^n a_0^m\right) + \sum_{i=1}^k \left(a_i^n a_0^m + a_i^m a_0^n\right)\epsilon_i + \sum_{i=1}^k \sum_{j=1}^k a_i^m  a_j^n \cdot \underbrace{ \epsilon_i \epsilon_j }_{\epsilon_{i, j}} \\
@@ -863,16 +886,129 @@ $\hat{a}$ and $\hat{b}$ in example, represent zonotope $Aff_z$
 #### ReLU
 Take $Aff_z$ and propagate it through ReLU transformers in layer, optaining one large zonotope as output of layer
 $$
-f_{ReLU}^\sharp = f_k^\sharp\circ\cdots\circ f_1^\sharp (Aff_z)\\
-f_i^\sharp(\psi) = (\psi\sqcap\{x_i\geq0\}) \sqcup \psi_0\\
-\psi_0 = \begin{cases}
+\begin{aligned}
+f_{ReLU}^\sharp &= f_k^\sharp\circ\cdots\circ f_1^\sharp (Aff_z)\\
+f_i^\sharp(\psi) &= (\psi\sqcap\{x_i\geq0\}) \sqcup \psi_0\\
+\psi_0 &= \begin{cases}
     [[x_i = 0]](\psi) & \text{if } \left(\psi\sqcap \{x_i < 0\}\right)\neq \bot\\
     \bot & \text{otherwise}
 \end{cases}
+\end{aligned}
 $$
 
 ![](https://i.imgur.com/xxbrJX8.png)
 
 
 
+
+<p style="page-break-after:always;"></p>
+
 # Probabilistic Security
+Motivation
+: *Public* output reveals information about *confidential* input. We want to *restrict* the amount of information revealed.
+
+## SPIRE
+#### Bayesian Inference
+<figure><img src="https://i.imgur.com/XI7Tx4o.png" style="height:75px;"/><img src="https://i.imgur.com/Y1BAlCk.png"  style="height:75px;"/><figcaption>Prior attacker belief &rarr; Posterior attacker belief</figcaption></figure>
+
+Prior $P(I = i)$
+$\to$ Query $P(O=o\mid I = i)$
+$\to$ Joint Prior $P(I=i, O = o)$
+$\to$ Posterior $P(I=i \mid O=o)$
+
+### Privacy Policies and Verification
+<img src="https://i.imgur.com/EslxtXA.png" style="float:right; height:200px;"/>
+
+Given
+: Attacker belief $\delta$, program $\pi$ and privacy policy $\Phi$
+
+Check
+: Could running the program $\pi$ violate the policy $\Phi$?
+
+$$
+\Phi \equiv \forall o\ldotp P(I\in S\mid O=o) \in [a,b]\\
+\begin{aligned}
+\text{Secret } S \subseteq I: \quad &\text{An event}\\
+\text{Belief bound:}\quad &[a,b] \subseteq[0,1]\\
+\end{aligned}
+$$
+In general multiple policies $\Phi_1, \ldots, \Phi_k$
+
+Privacy Enforcement
+: Enforcement $\xi$ is an equivalence relation over $O$ such that $\forall o\ldotp P(I\in S\mid O\in [o]_\xi)\in[a,b]$
+Intuition: Only report $[o]_\xi$ instead of $o$, conflate outputs.
+
+Permissiveness
+: Number of equivalence classes, $\left|\frac{O}{\xi}\right|$
+
+Precision
+: Number of equivalence classes of size , $\left|\{o \in O \mid |[o]_\xi| = 1\}\right|$
+
+
+**Given** probabilities $P(O=o), P(I\in S\mid O=o)$ for all $o$
+**Want** enforcement $\xi (\forall o\ldotp P(I\in S \mid O \in [o]_\xi)\in [a,b])$
+
+Synthesis of optimally permissive enforcement $\xi$ is NP-equivalent (NP-hard and NP-easy)
+Synthesis of optimally precise enforcement $\xi$ of a single policy is possible in $O(n \log n)$ time ($n=|O|$)
+
+#### Greedy Heuristics for Permissive Enforcement
+1. Pick most violating class
+2. Select candidate to merge
+3. Merge, repeat
+
+#### Optimal Algorithm for Precise Enforcement
+1. Join all violating classes in to class $C$
+2. Non-violating: done
+Otherwise, wlog^[without loss of generality] $P(S \mid o\in C) > b$
+3. Need to merge more outputs into $C$ such that
+$$
+P(I\in S\mid o\in C) = \frac{\sum_{o\in C}P(I\in S\mid O=o)\cdot P(O=o)}{\sum_{o\in C} P(O=o)}\leq b
+$$
+4. Sort by contribution, pick smallest first, merge into $C$
+
+
+
+
+
+
+## SLANG
+![](https://i.imgur.com/TrbvNlF.png)
+
+## Deobfuscation
+<img src="https://i.imgur.com/GcHTeo1.png" style="float:right; width:400px;"/>
+
+Goal: predict *unknown* facts given *known* facts
+### Approach
+1. Model: Conditional Random Fields (CRF)
+2. Query: MAP inference
+3. Learning: Structured SVM
+
+#### Conditional Random Fields
+$P(y \mid x) = \frac{1}{Z}\prod \varphi_i(x,y)$, $x$: known facts, $y$: unknown facts
+$Z$ (partition function) makes $P$ a valid probability distribution, very expensive to compute
+
+#### MAP inference
+Goal: find most likely assignment of $y$ that satisfies constraints
+
+$$
+y = \mathrm{argmax}_{y'} P(y \mid x) = \mathrm{argmax}_{y'}\frac{1}{Z}\prod \varphi_i(x, y)
+$$
+
+Good news: for this query $Z$ is unecessary
+Bad news: still NP-hard
+Solution: approximate algorithm
+
+#### Structured SVM
+Other representation: $P(y \mid x) = \frac{1}{Z}  \exp\sum\lambda_i f_i(x, y)$
+Learning finds weights $\lambda_i$ from training data $D = \{x^{(j)}, y^{(j)}\}_{j=1..n}$
+$D$: programs with facts of interest already manually annotated, big codebase to learn from
+
+Learn weights such that:
+$$
+\forall j \forall y \sum \lambda_i f_i(x^{(j)}, y^{(i)}) \geq \sum\lambda_i f_i(x^{(j)}, y) + \delta(y, y^{(j)})
+$$
+For all training data samples the given prediction is better than any other prediction by at least a margin
+
+- stochastic (sub-)gradient descent
+- MAP inference as subrouting
+- no partition function $Z$
