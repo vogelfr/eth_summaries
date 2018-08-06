@@ -83,7 +83,7 @@ Substitutions
 : $\sigma: V \to C$
 
 Consequence operator $T_P:\mathcal{I} \to \mathcal{I}$
-: $T_P(I) = \{\sigma(a)|a\gets l_1, \ldots, l_n\in P, \exists\sigma: \forall i\in[1, \ldots, n]: I \vdash\sigma(l_i)\}$
+: $T_P(I) = \{\sigma(a)\mid a\gets l_1, \ldots, l_n\in P, \exists\sigma: \forall i\in[1, \ldots, n]: I \vdash\sigma(l_i)\}$
 with $I\vdash l_i$ if $l_1 = a$ and $a\in I$
 $I\vdash l_i$ if $l_1 = !a$ and $a\notin I$
 
@@ -93,7 +93,7 @@ A Datalog program is positive if its rules do not contain negative literals.
 For any positive Datalog program $P$ the consequence operator $T_P$ is monotone.
 
 The semantics of a positive Datalog program $P$ is $\textrm{lfp}_{T_P}$
-$\textrm{lfp}_{T_P} can be computed by iteratively applying the consequence operator until reaching a fixed-point.
+$\textrm{lfp}_{T_P}$ can be computed by iteratively applying the consequence operator until reaching a fixed-point.
 
 ### Stratified Datalog
 $T_P$ not monotone for Datalog programs with negation
@@ -455,7 +455,7 @@ Further security properties
 ## Securify
 ![](https://i.imgur.com/ASsPJoV.png)
 
-<img source="https://i.imgur.com/OwLDpfe.png" style="float:right; height:150px;"></img>
+<img src="https://i.imgur.com/OwLDpfe.png" style="float:right; height:150px;"></img>
 
 - Security properties get encoded into Compliance and Violation patterns
 - Static analysis using fixed-point computation
@@ -696,8 +696,182 @@ $$
 $$
 Common $N_x$:
 $$
-N_x^\epsilon = \left\{x' \vert\Vert x' - x \Vert_p < \epsilon \right\} \quad \text{with } p = 0, 1, 2, \infty
+N_x^\epsilon = \left\{x' \mid \Vert x' - x \Vert_p < \epsilon \right\} \quad \text{with } p = 0, 1, 2, \infty
 $$
+
+#### Testing
+Check a strict subset of points in $N_x$
+
+If we find $x'\in Nx$ such that $f(x') = f(x)$, $f$ is not robust in $x$. Otherwise can not garantee robustness.
+
+#### Verification
+Analyse all points in $N_x$
+$f$ is robust in $x$ iff $\forall x' \in N_x: f(x') = f(x)$
+
+In general this is *undecidable*, but under certain assumptions may be decidable.
+
+### Decidable verification
+Focus on robustness of $x$ for $p = \infty$
+$$
+\begin{aligned}
+N_x^\epsilon &= \left\{ x' \mid \Vert x'-x \Vert_\infty < \epsilon\right\}\\
+&= \left\{x' \mid |x_0-x_0'| < \epsilon\wedge \cdots \wedge |x_n -x_n'| < \epsilon\right\}\\
+\end{aligned}
+$$
+
+#### Goal
+Check if $\forall x'\in N_x^\epsilon\ldotp f(x) = f(x')$, that is check $\vert x_0 - x_0'\vert < \epsilon \wedge \cdots \wedge \vert x_n - x_n'\vert < \epsilon \wedge f(x) = f(x')$$
+
+To determine whether this is satisfiable we define a solver
+
+#### Theory and Interpretation
+Theory
+: Signature $\Sigma$
+Interpretation $I$ consisting of domain and interpretation for symbols in $\Sigma$
+
+Satisfiability Modulo Theory (SMT) problem
+: Decision problem of determining whether logical formula in a certain theory is satisfiable
+
+#### Simplex
+Solver for the SMT problem for the linear arithmetic theory
+$$
+\Sigma = \left\langle +, -, \cdot, \leq, \geq, =, 0, \frac{1}{1}, \frac{1}{2}, \ldots, \frac{2}{1}, \frac{2}{2}, \ldots \right\rangle
+$$
+Determines the satisfiability of a conjunction of formulas of the form
+$$
+\sum_{x_i\in X} c_i x_i \Join d_i\quad \Join \in \{\leq, \geq, =\}
+$$
+$X$ is a set of variables, $c_i$, $d_i$ are constants
+
+Iterative algorithm
+
+**TODO** Understand...
+
+## AI^2^: AI for AI
+### Neural Network Analysis Problem
+Given
+- a neural network $N$
+- a property over inputs $\varphi$
+- a property over outputs $\psi$
+
+check whether $\forall i \in I\ldotp i\models \varphi \Rightarrow N(i) \models \psi$ holds
+
+#### Challenges:
+- Property $\varphi$ over inputs usually captures *unbounded* set of inputs
+- Existing symbolic solutions *do not scale* to large networks
+
+#### Key technical insight
+Deep Neural Nets: Affine transforms & restricted non-linearity
++
+Abstract interpretation: scalable and precise numerical domains
+
+### Abstract Interpretation
+1. Select *abstract domain* based on type of *properties* you want to prove
+2. Define abstract semantics for *programming language* w.r.t. to abstract domain
+    - Define abstract transformers (effect of statements/expressions on abstract domain)
+    - Prove abstract semantics are sound w.r.t. concrete semantics of programming language
+3. Iterate abstract transformers over abstract domain until *fixed point*
+
+*Fixed point* is the *over-approximation* of the program.
+
+![](https://i.imgur.com/Zxeyq4A.png)
+
+#### Function approximation
+$F: C \to C$ and $F^\sharp: A \to A$
+The approximation of $F$ is defined as $\forall z \in A: F(\gamma(z)) \sqsubseteq_C \gamma(F^\sharp(z))$
+
+#### Least Fixed Point Approximation
+Given
+1. *monotone* functions $F: C\to C$ and $F^\sharp: A\to A$
+2. $\gamma: A \to C$ is *monotone*
+3. $\forall z \in A: F(\gamma(z)) \sqsubseteq_C \gamma(F^\sharp(z))$ ($F^\sharp$ approximates $F$)
+
+$\Rightarrow \quad \mathrm{lfp}(F) \sqsubseteq_C \gamma(\mathrm{lfp}(F^\sharp))$
+
+#### Example
+##### Interval domain
+![](https://i.imgur.com/kMC3NBM.png)
+
+##### Semantics
+If we add $\bot_i$ to any other element we get $\bot_i$
+If both operands are not $\bot_i$ we get
+$$
+[x, y] + [a,b] = [x+a, y+b]\\
+[x, y] * [a,b] = [x*a, y*b]
+$$
+
+##### Iteration
+1. Start from $\bot$
+2. Variables initialised to $\top$
+3. Iterate and replace interval according to semantics until fix-point
+
+### Zonotope Abstract domain
+Zonotope
+: Polytope formed by Minkowski sum of line segments in any dimension, convex, point-symmetric, all faces polytopes of $n-1^{th}$ degree with point symmetry
+
+Minkowski sum
+: Dilatation, sum of set of position vectors $A$ and $B$
+$$
+A+B = \{a+b\mid a\in A, b\in B\}
+$$
+
+Zonotope Abstract domain
+- Numerical domain, *exact* for linear operations
+- Each variable (*abstract neuron*) is captured in affine form
+- More extensive version of interval domain: still about single variables, but can be related through parameters
+
+<img src="https://i.imgur.com/hMG47iR.png" style="float:right; height:150px;"></img>
+
+For two concrete neurons $n$ and $m$ the abstract neurons will be
+$$
+\hat{n} = a_0^n + \sum_{i=1}^k a_i^n \epsilon_i\\
+\hat{m} = a_0^m + \sum_{i=1}^k a_i^m \epsilon_i\\
+$$
+The *meaning* $\gamma$ is a polytope centered around $a_0^n$ and $a_0^m$
+$\epsilon_i$: noise terms ranging $[-1,1]$ shared between abstract neurons
+$a_i^n$: real number that controls magnitude of noise
+Closed under affine transforms, not closed under joints and meets
+
+#### Operations
+***Multiplication by a constant $C$***
+$$
+\left(a_0^n + \sum_{i=1}^k a_i^n\epsilon_i\right) \cdot C = C \cdot a_0^n + \sum_{i=1}^k C\cdot a_i^n\epsilon_i
+$$
+
+***Adding two variables (abstract transformer is exact)***
+$$
+\left(a_0^n + \sum_{i=1}^k a_i^n\epsilon_i\right) + \left(a_0^m + \sum_{i=1}^k a_i^m\epsilon_i\right) = \left(a_0^n + a_0^m \right)+ \sum_{i=1}^k \left(a_i^n+a_i^m\right)\epsilon_i
+$$
+
+***Multiplication of two variables (non-linear, approximation is computed)***
+$$
+\left(a_0^n + \sum_{i=1}^k a_i^n\epsilon_i\right) \cdot \left(a_0^m + \sum_{i=1}^k a_i^m\epsilon_i\right) = \left(a_0^n a_0^m\right) + \sum_{i=1}^k \left(a_i^n a_0^m + a_i^m a_0^n\right)\epsilon_i + \sum_{i=1}^k \sum_{j=1}^k a_i^m  a_j^n \cdot \underbrace{ \epsilon_i \epsilon_j }_{\epsilon_{i, j}} \\
+\epsilon_{i,j} \in \begin{cases}
+    [-1,1] & \text{if } i \neq j\\
+    [0,1] & \text{if } i = j\\
+\end{cases}
+$$
+
+### ReLU Layer Abstract Transformer
+#### Affine
+
+<img src="https://i.imgur.com/fztTugX.png" style="float:right; height:150px;"></img>
+
+Compute effect of affine transforms on input zonotope $\to$ result for output abstract neuron.
+$\hat{a}$ and $\hat{b}$ in example, represent zonotope $Aff_z$
+
+#### ReLU
+Take $Aff_z$ and propagate it through ReLU transformers in layer, optaining one large zonotope as output of layer
+$$
+f_{ReLU}^\sharp = f_k^\sharp\circ\cdots\circ f_1^\sharp (Aff_z)\\
+f_i^\sharp(\psi) = (\psi\sqcap\{x_i\geq0\}) \sqcup \psi_0\\
+\psi_0 = \begin{cases}
+    [[x_i = 0]](\psi) & \text{if } \left(\psi\sqcap \{x_i < 0\}\right)\neq \bot\\
+    \bot & \text{otherwise}
+\end{cases}
+$$
+
+![](https://i.imgur.com/xxbrJX8.png)
 
 
 
