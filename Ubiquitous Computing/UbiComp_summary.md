@@ -1,5 +1,5 @@
 ---
-title: Ubiquitous Computing
+title: UbiComp Summary
 desription: Summary of 252-0312-00L Ubiquitous Computing at ETH Zürich FS18
 tags: ETH, Zusammenfassung
 ---
@@ -433,3 +433,218 @@ Slotted ALOHA
 
 ### Adaptive round algorithms
 Transponder replies are in slots, number of slots is dynamically altered
+
+## RFID vs NFC
+
+|  | RFID | NFC |
+| -------- | -------- | -------- |
+| Communication     | One-way     | Two-way     |
+| Scan distance | Up to 1m | Up to 10cm |
+| Scan tags simultaneously | Yes | No |
+
+# Internet of Things, Web of Things
+## Issues
+- Connecting things
+    - Edge device can look very different from Internet of Computers
+    - Low bandwidth, more "bursty", wish to talk to many sensors at once
+    - IoT apps should not require knowledge of these details
+- Interconnecting things across IoT silos
+    - Broad: resources come from variety of source
+    - Deep: involve taking multiple steps / using multiple APIs
+- Enable machines to use IoT functionality
+    - APIs designed for people difficult to use by machines (buy book -> add to cart -> go to checkout -> etc.)
+
+Web architecture can help:
+- Ubiquity
+- Openness
+- Clearly defined protocol semantics
+
+
+## Representational State Transfer (REST)
+1. **Shared identification model**
+    allows everybody to refer to available resources (URI)
+2. **Uniform interfaces**
+    can be used to access those resources
+3. **Self-describing representations**
+    allow clients to understand those resources
+    
+### Shared identification model
+Name everything you want to talk about
+
+"Things" can refer to *anything*
+- Products in online shop
+- Categories used for grouping products
+- Customers
+- Shopping carts
+
+Client state transitions are also represented as resources
+- `Next` links on multi-page submission process
+- Paged results with URIs that identify following page
+
+### Uniform interfaces
+The same small set of operations applies to everything (i.e. every resource)
+
+Example: HTTP
+- Interacting with resources is possible *without* knowing it beforehand
+- Interaction language *only* about making interaction possible and scalable
+- Exchanged representation based on *Shared Representation Model*
+
+### Self-describing representations
+Resources are *abstract* entities (can not be used per se)
+- *Shared identification* guarantees clear identification
+- Accessed through *uniform interface*
+
+Interaction happens via *resource representation*
+- It is communicated which kind of representation is used
+- Representation formats can be negotiated between peers
+- Whatever the representation, it *must* support links
+- Depending on client or machine access representation will (should) be different
+
+Need also *shared representation model* for *shared understandability*
+
+### Stateless interactions
+- State is kept in resources and clients, *not* in transaction
+- *Resource state* managed on server
+- *Client state* managed by client
+
+### Hypermedia As The Engine Of Application State (HATEOAS)
+- Resource representations contain links to identified resources
+- Servers guide interactions by providing links
+- Links are *possible state transitions* of the client/server application
+
+### REST Architectural Style
+REST enables scalability, mashup-ability, usability, accessibility
+
+## HTTP
+- Text-based protocol
+- HTTP methods indicates action to be performed on resource
+    - same semantics with every resource (uniform interface)
+
+### HTTP Requests
+HTTP GET
+: Retrieve representation of addressed resource
+Safe: doesn't modify resource representation -> can be cached, can be pre-fetched
+
+HTTP PUT
+: Modify addressed resource's representation
+Idempotent: applying it n times has same effect as applying once -> fault-tolerant APIs (clients can safely retry if time-out from server)
+
+### HTTP Header and Response
+Request header
+: Accept, user-agent, connection properties
+
+Response header
+: Content, metadata, lifetime, etc.
+
+Servers/clients *must* ignore unknown fields (additions can enter protocol over time)
+
+Response codes
+: Numeric status code + text
+2xx for ok
+3xx for redirections
+4xx for client side problems
+5xx for server side problems
+
+### Cross-origin Resource Sharing (CORS)
+Core security concept: Same-origin policy (script in one web page may access data in second page iff both pages have same origin (URI scheme + host name + port number))
+
+CORS idea: allow target resource to control who may interact with it
+
+## Constrained Application Protocol (CoAP)
+REST protocol optimised for bandwidth and processing efficiency
+- Extended subset of HTTP with transparent mapping to HTTP
+- Better for near-real time
+- No connection managment overhead
+- Smaller headers
+- Lightweight security
+- Specialised for M2M applications: Multicast & Observe
+- Easy to proxy to/from HTTP
+- Designed for datagram transport protocols
+
+### Observing resources
+<img src="https://i.imgur.com/7NrhJRu.png" style="height:250px;" />
+
+### Group communication
+<img src="https://i.imgur.com/2UUiKjp.png" style="height:250px;" />
+
+### CoAPS
+- End-to-end security
+- Based on DTLS (TLS for datagrams)
+- Focus on ECC
+- Pre-shared secrets, certs, or raw public keys
+- Hardware acceleration in System-on-a-chip
+
+### Reliability
+<img src="https://i.imgur.com/hIYWYzc.png" style="float:right;width:400px;"/>
+
+Confirmable (CON)
+: reliable message with retransmission (randomised timeout of 2-3s, binary exponential back-off, stops after ACK or 4 **re**transmissions)
+
+Non-confirmable (NON)
+: best-effort transmission
+
+Acknowledgment (ACK)
+: confirms CON message
+
+Reset (RST)
+: used when ON (or NON) can not be processed
+
+ACK is matched to CON through MID
+Response is matched to request through token
+
+## Semantic Technologies
+Semantic technology
+: A software technology that allows the meaning of, and association between, information to be known and processed at execution time
+
+Semantic information model
+: Formal representations of concepts and their associations to convey conceptual meaning
+
+About giving machines *shared understanding* of the world
+
+- **Classes** represent hierarchical structure and content
+- **Properties** represent relations
+- **Instances** are non-decompositional
+
+<img src="https://i.imgur.com/ZWS7K6m.png" style="float:right;width:400px;" />
+
+Semantic Web
+: provides common framework that allows data to be shared and reused across application, enterprise and community boundaries
+$\to$Linked data
+
+Ideally: always have a single shared information/data model
+Costs: high up-front modelling costs
+
+# Smart cards
+Main use: security
+- portable secure container for secret data
+- secure execution environment for crypto algorithms
+- authentication and authorisation
+
+Communication
+1. Cards gets Vcc and CLK, does `power-on reset`
+2. Card sends `answer to reset` (ATR) (basic information about card)
+3. Terminal sends first command `application protocol data unit` APDU (max 254 bytes) to card
+4. Cards answers with response APDU
+
+## SIM
+- Identified by unique IMSI (sent to backend system (encrypted) -> one-sided authentication)
+- 22 commands
+- File system (access PIN-restricted)
+
+## Wireless smartcards
+### Authentication
+#### Terminal verifies cards (internetl auth)
+- terminal sends random number to card to be hashed or encrypted using key
+- card provides hash or cyphertext
+- prevents card clones
+
+#### Card verifies terminal (external auth)
+- terminal asks card for challenge and sends response back to card to verify
+- cryptographic challenge-response (based on shared secret)
+
+#### Card holder's authentication
+- terminal asks user to provide password (PIN)
+- password is sent to card for verification (in encrypted form)
+
+# Location
+<img src="https://i.imgur.com/f3wFoPG.png" style="height:200px;" />
